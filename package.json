@@ -16,7 +16,9 @@
     "coveralls": "cat ./.coverage/lcov.info | coveralls"
   },
   "dependencies": {
-    "domapic-service": "1.0.0-alpha.3"
+    "domapic-service": "1.0.0-alpha.3",
+    "homebridge": "0.4.45",
+    "lodash": "4.17.10"
   },
   "devDependencies": {
     "coveralls": "3.0.2",
