@@ -7,9 +7,7 @@ const MODULE = '../lib/plugins/SwitchFactory'
 const Mock = function () {
   let sandbox = test.sinon.createSandbox()
 
-  const instanceStubs = {
-    restart: sandbox.stub()
-  }
+  const instanceStubs = {}
 
   const stub = sandbox.stub().callsFake(function () {
     return instanceStubs
