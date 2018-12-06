@@ -31,6 +31,10 @@ const Mock = function () {
     },
     events: {
       on: sandbox.stub()
+    },
+    api: {
+      extendOpenApi: sandbox.stub().resolves(),
+      addOperations: sandbox.stub().resolves()
     }
   }
 
