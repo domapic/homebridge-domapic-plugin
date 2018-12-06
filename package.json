@@ -19,7 +19,8 @@
     "domapic-service": "1.0.0-alpha.3",
     "homebridge": "0.4.45",
     "lodash": "4.17.10",
-    "request-promise": "4.2.2"
+    "request-promise": "4.2.2",
+    "tree-kill": "1.2.1"
   },
   "devDependencies": {
     "coveralls": "3.0.2",

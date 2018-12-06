@@ -28,6 +28,9 @@ const Mock = function () {
       info: sandbox.stub().resolves(),
       debug: sandbox.stub().resolves(),
       error: sandbox.stub().resolves()
+    },
+    events: {
+      on: sandbox.stub()
     }
   }
 
