@@ -19,7 +19,7 @@ domapic.createPlugin({
   const homebridge = new Homebridge(dmpcPlugin)
   const homebridgeConfig = new HomebridgeConfig(dmpcPlugin)
 
-  const restartHomebridge = debounce(async () => {
+  const restartHomebridge = debounce(async (event) => {
     await homebridgeConfig.write(await abilities.get())
     homebridge.restart()
   }, 5000)
@@ -28,7 +28,7 @@ domapic.createPlugin({
   dmpcPlugin.events.on('ability:created', restartHomebridge)
   dmpcPlugin.events.on('ability:deleted', restartHomebridge)
   dmpcPlugin.events.on('service:updated', restartHomebridge)
-  dmpcPlugin.events.on('connection', restartHomebridge)
+  dmpcPlugin.events.once('connection', restartHomebridge)
 
   await dmpcPlugin.api.extendOpenApi(abilitiesBridgeApi)
   await dmpcPlugin.api.addOperations(abilitiesBridge.operations())
