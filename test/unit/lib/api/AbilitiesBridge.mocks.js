@@ -1,14 +1,14 @@
 const test = require('narval')
 
-const mockery = require('../mockery')
+const mockery = require('../../mockery')
 
-const MODULE = './lib/Homebridge'
+const MODULE = './lib/api/AbilitiesBridge'
 
 const Mock = function () {
   let sandbox = test.sinon.createSandbox()
 
   const instanceStubs = {
-    restart: sandbox.stub()
+    operations: sandbox.stub()
   }
 
   const stub = sandbox.stub().callsFake(function () {

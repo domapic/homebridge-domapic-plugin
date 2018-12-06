@@ -1,8 +1,8 @@
 const test = require('narval')
 
-const mockery = require('../mockery')
+const mockery = require('../../mockery')
 
-const MODULE = './lib/Homebridge'
+const MODULE = '../lib/plugins/SwitchFactory'
 
 const Mock = function () {
   let sandbox = test.sinon.createSandbox()

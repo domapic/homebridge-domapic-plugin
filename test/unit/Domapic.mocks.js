@@ -30,7 +30,8 @@ const Mock = function () {
       error: sandbox.stub().resolves()
     },
     events: {
-      on: sandbox.stub()
+      on: sandbox.stub(),
+      once: sandbox.stub()
     },
     api: {
       extendOpenApi: sandbox.stub().resolves(),
