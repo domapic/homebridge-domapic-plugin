@@ -5,7 +5,7 @@ const SwitchFactory = require('../lib/plugins/SwitchFactory')
 
 module.exports = function (homebridge) {
   const Switch = new SwitchFactory(homebridge.hap.Service, homebridge.hap.Characteristic)
-  homebridge.registerAccessory(DOMAPIC, `${DOMAPIC}${Switch.name}`, Switch)
+  homebridge.registerAccessory(DOMAPIC, Switch.name, Switch)
 
   // TODO, register accesories for all HomeKit accesory types
 }

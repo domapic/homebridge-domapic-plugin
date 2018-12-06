@@ -5,24 +5,33 @@ const path = require('path')
 const domapic = require('domapic-service')
 const { debounce } = require('lodash')
 
-const Homebridge = require('./lib/Homebridge')
+const abilitiesBridgeApi = require('./lib/api/abilities-bridge.json')
 const Abilities = require('./lib/Abilities')
+const AbilitiesBridge = require('./lib/api/AbilitiesBridge')
+const Homebridge = require('./lib/Homebridge')
+const HomebridgeConfig = require('./lib/HomebridgeConfig')
 
 domapic.createPlugin({
   packagePath: path.resolve(__dirname)
-}).then(dmpcPlugin => {
-  const homebridge = new Homebridge(dmpcPlugin)
+}).then(async dmpcPlugin => {
   const abilities = new Abilities(dmpcPlugin)
+  const abilitiesBridge = new AbilitiesBridge(dmpcPlugin)
+  const homebridge = new Homebridge(dmpcPlugin)
+  const homebridgeConfig = new HomebridgeConfig(dmpcPlugin)
 
-  const startHomebridge = debounce(async () => {
-    homebridge.restart(await abilities.get())
+  const restartHomebridge = debounce(async () => {
+    await homebridgeConfig.write(await abilities.get())
+    homebridge.restart()
   }, 5000)
 
-  dmpcPlugin.events.on('ability:updated', startHomebridge)
-  dmpcPlugin.events.on('ability:created', startHomebridge)
-  dmpcPlugin.events.on('ability:deleted', startHomebridge)
-  dmpcPlugin.events.on('service:updated', startHomebridge)
-  dmpcPlugin.events.on('connection', startHomebridge)
+  dmpcPlugin.events.on('ability:updated', restartHomebridge)
+  dmpcPlugin.events.on('ability:created', restartHomebridge)
+  dmpcPlugin.events.on('ability:deleted', restartHomebridge)
+  dmpcPlugin.events.on('service:updated', restartHomebridge)
+  dmpcPlugin.events.on('connection', restartHomebridge)
+
+  await dmpcPlugin.api.extendOpenApi(abilitiesBridgeApi)
+  await dmpcPlugin.api.addOperations(abilitiesBridge.operations())
 
   return dmpcPlugin.start()
 })

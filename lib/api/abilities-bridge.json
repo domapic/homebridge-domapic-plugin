@@ -1,0 +1,104 @@
+{
+  "tags": [{
+    "name": "controller",
+    "description": "Controller bridge"
+  },
+  {
+    "name": "ability",
+    "description": "Service ability"
+  }],
+  "components": {
+    "schemas": {
+      "AbilityData": {
+        "description": "Data that abilities actions or states can handle",
+        "type": "object",
+        "properties": {
+          "data": {
+            "oneOf": [{
+              "type": "string"
+            }, {
+              "type": "boolean"
+            }, {
+              "type": "number"
+            }]
+          }
+        },
+        "additionalProperties": false,
+        "example": {
+          "data": "Foo data"
+        }
+      }
+    }
+  },
+  "paths": {
+    "/controller/abilities/{id}": {
+      "post": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Ability id"
+          }
+        ],
+        "tags": ["controller", "ability", "action"],
+        "summary": "Ability action",
+        "description": "Sends an ability action to the Controller",
+        "operationId": "abilityActionHandler",
+        "requestBody": {
+          "description": "Action data",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AbilityData"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Ability action success"
+          }
+        },
+        "security": [{
+          "apiKey": []
+        }]
+      },
+      "get": {
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "schema": {
+              "type": "string"
+            },
+            "required": true,
+            "description": "Ability id"
+          }
+        ],
+        "tags": ["controller", "ability", "state"],
+        "summary": "Ability state",
+        "description": "Returns an ability state requesting it from the Controller",
+        "operationId": "abilityStateHandler",
+        "responses": {
+          "200": {
+            "description": "service success",
+            "content": {
+              "application/json": {
+                "schema" : {
+                  "$ref": "#/components/schemas/AbilityData"
+                }
+              }
+            }
+          }
+        },
+        "security": [{
+          "apiKey": []
+        }]
+      }
+    }
+  }
+}
