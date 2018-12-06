@@ -1,0 +1,10 @@
+{
+  "name": "homebridge-domapic-plugin",
+  "keywords": [
+    "homebridge-plugin"
+  ],
+  "main": "index.js",
+  "engines": {
+    "homebridge": ">=0.2.0"
+  }
+}

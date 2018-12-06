@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "domapic-service": "1.0.0-alpha.3",
+    "fs-extra": "7.0.1",
     "homebridge": "0.4.45",
     "lodash": "4.17.10",
     "request-promise": "4.2.2",
