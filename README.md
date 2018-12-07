@@ -10,7 +10,7 @@
 
 ## Intro
 
-The Homebridge Domapic Plugin retrieve the information about modules and abilities registered in your Domapic Controller, and automatically configure and starts an underlay Homebridge server that will act as a bridge between Apple's HomeKit and the Domapic abilities.
+The Homebridge Domapic Plugin retrieves the information about modules and abilities registered in your Domapic Controller, and automatically configures and starts an underlay Homebridge server that will act as a bridge between Apple's HomeKit and the Domapic abilities.
 
 Since Siri supports devices added through HomeKit, this means that **with this plugin you can ask Siri to control your own-made Domapic modules:**
 
