@@ -93,6 +93,15 @@ test.describe('Homebridge Config', () => {
             }])
         })
     })
+
+    test.it('should set port based on homebridgePort plugin configuration', () => {
+      const fooPort = 3422
+      domapic.stubs.plugin.config.get.withArgs('homebridgePort').resolves(fooPort)
+      return homebridgeConfig.write(fooAbilities)
+        .then(() => {
+          return test.expect(fsExtra.stubs.writeJson.getCall(0).args[1].bridge.port).to.equal(fooPort)
+        })
+    })
   })
 
   test.describe('getSwitchs method', () => {
