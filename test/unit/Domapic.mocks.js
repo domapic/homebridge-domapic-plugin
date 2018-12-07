@@ -39,7 +39,9 @@ const Mock = function () {
     },
     controller: {
       abilities: {
-        get: sandbox.stub().resolves()
+        get: sandbox.stub().resolves(),
+        action: sandbox.stub().resolves(),
+        state: sandbox.stub().resolves()
       },
       services: {
         get: sandbox.stub().resolves()
