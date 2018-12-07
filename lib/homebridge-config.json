@@ -1,8 +1,7 @@
 {
   "bridge": {
     "name": "Homebridge",
-    "username": "CC:22:3D:E3:CE:30",
-    "port": 51826
+    "username": "CC:22:3D:E3:CE:30"
   },
   "description": "Homebridge server for Domapic Homekit integration",
   "accessories": [
