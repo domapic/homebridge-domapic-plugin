@@ -1,6 +1,6 @@
 {
   "name": "homebridge-domapic-plugin",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-beta.1",
   "description": "Domapic plugin for controlling modules with Apple's HomeKit",
   "main": "server.js",
   "keywords": [
