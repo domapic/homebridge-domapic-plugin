@@ -7,7 +7,7 @@ const ChildProcessMocks = require('../ChildProcess.mocks')
 const TreeKillMocks = require('../TreeKill.mocks')
 const FsExtraMocks = require('../FsExtra.mocks')
 
-test.describe('Abilities', () => {
+test.describe('HomeBridge', () => {
   const PRE_LOG = '[Homebrigde log]'
   let Homebridge
   let homebridge
