@@ -91,4 +91,4 @@ domapic-homebridge start --homebridgePort=3200
 [relay-domapic-module-url]: https://www.npmjs.com/package/relay-domapic-module
 [domapic-service-options-url]: https://github.com/domapic/domapic-service#options
 
-[homekit-connection-qr-image]: ./assets/homebridge_qr_screenshot.jpg
+[homekit-connection-qr-image]: http://domapic.com/assets/homebridge_qr_screenshot.jpg
