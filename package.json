@@ -4,7 +4,7 @@
   "description": "Domapic plugin for controlling modules with Apple's HomeKit",
   "main": "server.js",
   "bin": {
-    "homebridge-domapic": "./bin/homebridge-domapic"
+    "domapic-homebridge": "./bin/domapic-homebridge"
   },
   "files": [
     "/lib",
@@ -23,7 +23,7 @@
   "scripts": {
     "test": "narval",
     "coveralls": "cat ./.coverage/lcov.info | coveralls",
-    "homebridge-domapic": "./bin/homebridge-domapic"
+    "domapic-homebridge": "./bin/domapic-homebridge"
   },
   "dependencies": {
     "domapic-service": "1.0.0-alpha.3",
