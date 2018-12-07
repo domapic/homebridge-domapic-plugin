@@ -36,6 +36,14 @@ const Mock = function () {
     api: {
       extendOpenApi: sandbox.stub().resolves(),
       addOperations: sandbox.stub().resolves()
+    },
+    controller: {
+      abilities: {
+        get: sandbox.stub().resolves()
+      },
+      services: {
+        get: sandbox.stub().resolves()
+      }
     }
   }
 
