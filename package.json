@@ -3,6 +3,15 @@
   "version": "1.0.0-beta.1",
   "description": "Domapic plugin for controlling modules with Apple's HomeKit",
   "main": "server.js",
+  "bin": {
+    "homebridge-domapic": "./bin/homebridge-domapic"
+  },
+  "files": [
+    "/lib",
+    "/bin",
+    "/plugin",
+    "server.js"
+  ],
   "keywords": [
     "domapic",
     "plugin",
@@ -13,7 +22,8 @@
   ],
   "scripts": {
     "test": "narval",
-    "coveralls": "cat ./.coverage/lcov.info | coveralls"
+    "coveralls": "cat ./.coverage/lcov.info | coveralls",
+    "homebridge-domapic": "./bin/homebridge-domapic"
   },
   "dependencies": {
     "domapic-service": "1.0.0-alpha.3",
