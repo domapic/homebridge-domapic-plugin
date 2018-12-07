@@ -1,6 +1,6 @@
 # Homebridge Domapic Plugin
 
-> Domapic Plugin that automatically register Domapic abilities as Apple's Homekit accessories (using the awesome [Homebridge][homebridge-url])
+> Domapic Plugin that automatically register Domapic abilities as Apple's HomeKit accessories (using the awesome [Homebridge][homebridge-url])
 
 [![Build status][travisci-image]][travisci-url] [![Coverage Status][coveralls-image]][coveralls-url] [![Quality Gate][quality-gate-image]][quality-gate-url] [![js-standard-style][standard-image]][standard-url]
 
@@ -10,16 +10,61 @@
 
 ## Intro
 
-The Homebridge Domapic Plugin retrieve the information about modules and abilities registered in your Domapic Controller, and automatically configure and starts an underlay Homebridge server that will act as a bridge between Apple's Homekit and the Domapic abilities.
+The Homebridge Domapic Plugin retrieve the information about modules and abilities registered in your Domapic Controller, and automatically configure and starts an underlay Homebridge server that will act as a bridge between Apple's HomeKit and the Domapic abilities.
 
-Since Siri supports devices added through HomeKit, this means that with this plugin you can ask Siri to control your own-made Domapic modules:
+Since Siri supports devices added through HomeKit, this means that **with this plugin you can ask Siri to control your own-made Domapic modules:**
 
 * _"Siri, turn on the living room light"_
 * _"Siri, open the garage door"_
-* _"Siri, turn on the awesome webhook"_
+* _"Siri, activate my awesome webhook"_
 
-For now, only abilities which have "boolean" data type that have both `state` and `action` are being exposed as Homekit `Switch` accessories. Soon will be added custom plugin configuration for abilities to [Domapic Controller][domapic-controller-url], and then the user will be able to decide which type of accessory should be each ability, as long as data type is compatible.
+> For now, only abilities which have "boolean" data type and have both `state` and `action` are being exposed as HomeKit `Switch` accessories. Soon will be added custom plugin configuration for abilities to [Domapic Controller][domapic-controller-url], and then the user will be able to decide which type of accessory should be each ability, as long as data type is compatible.
 
+## Prerequisites
+
+[Domapic Controller][domapic-controller-url] has to be installed and running in your LAN.  
+At least one Domapic module, such as [relay-domapic-module][relay-domapic-module-url] has to be installed and connected to the Controller.  
+Also read the system requisites of [Homebridge][homebridge-url], which is used underlay to connect with HomeKit.
+
+## Installation
+
+```bash
+npm i homebridge-domapic-plugin -g
+```
+
+## Start the plugin
+
+Start the plugin providing the Controller url and connection token:
+
+```bash
+domapic-homebridge start --controller=http://192.168.1.100:3000 --controllerApiKey=foo-api-key
+```
+
+The plugin will be started in background using [pm2][pm2-url]
+
+To display logs, type:
+
+```bash
+domapic-homebridge logs --lines=200
+```
+
+Once the Plugin has connected with the Controller, the Homebridge server will be started, and a QR code will be displayed in logs:
+
+![HomeKit connection QR][homekit-connection-qr-image]
+
+**Scan this code with your HomeKit app on your iOS device to add your accessories.**
+
+From now, all modules added to your Controller will automatically be added to your HomeKit app too, and **will be available through Siri**.
+
+## Options
+
+The plugin, apart of all common [domapic services options][domapic-service-options-url], provides custom options for configuring it:
+
+* `homebridgePort` - Number defining the port that Homebridge server will use.
+
+```bash
+domapic-homebridge start --homebridgePort=3200
+```
 
 [coveralls-image]: https://coveralls.io/repos/github/domapic/homebridge-domapic-plugin/badge.svg?branch=master
 [coveralls-url]: https://coveralls.io/github/domapic/homebridge-domapic-plugin
@@ -40,5 +85,10 @@ For now, only abilities which have "boolean" data type that have both `state` an
 [standard-image]: https://img.shields.io/badge/code%20style-standard-brightgreen.svg
 [standard-url]: http://standardjs.com/
 
+[pm2-url]: http://pm2.keymetrics.io/
 [homebridge-url]: https://www.npmjs.com/package/homebridge
 [domapic-controller-url]: https://www.npmjs.com/package/domapic-controller
+[relay-domapic-module-url]: https://www.npmjs.com/package/relay-domapic-module
+[domapic-service-options-url]: https://github.com/domapic/domapic-service#options
+
+[homekit-connection-qr-image]: ./assets/homebridge_qr_screenshot.jpg
