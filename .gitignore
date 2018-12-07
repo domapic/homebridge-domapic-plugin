@@ -3,5 +3,7 @@
 .scannerwork
 node_modules
 npm-debug.log
+.homebridge
 .test
 /.narval
+/plugin/package.json

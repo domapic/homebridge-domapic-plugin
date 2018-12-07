@@ -28,6 +28,24 @@ const Mock = function () {
       info: sandbox.stub().resolves(),
       debug: sandbox.stub().resolves(),
       error: sandbox.stub().resolves()
+    },
+    events: {
+      on: sandbox.stub(),
+      once: sandbox.stub()
+    },
+    api: {
+      extendOpenApi: sandbox.stub().resolves(),
+      addOperations: sandbox.stub().resolves()
+    },
+    controller: {
+      abilities: {
+        get: sandbox.stub().resolves(),
+        action: sandbox.stub().resolves(),
+        state: sandbox.stub().resolves()
+      },
+      services: {
+        get: sandbox.stub().resolves()
+      }
     }
   }
 

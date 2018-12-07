@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Removed
 
-## [1.0.0-alpha.1] - 2018-12-04
+## [1.0.0-beta.1] - 2018-12-07
 ### Added
 - First prerelease
+- Register boolean abilities as Switch accessories
