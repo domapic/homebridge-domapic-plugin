@@ -2,7 +2,7 @@ const test = require('narval')
 
 const DomapicMocks = require('../Domapic.mocks')
 
-test.describe.only('Abilities', () => {
+test.describe('Abilities', () => {
   let Abilities
   let abilities
   let domapic
