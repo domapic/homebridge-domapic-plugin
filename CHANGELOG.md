@@ -10,6 +10,18 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Removed
 
+## [1.0.0-beta.2] - 2018-12-09
+### Added
+- Add StatelessSwitch accessory
+
+### Changed
+- Set Homebridge server name from service name
+- Set Homebridge server random mac, unique by plugin instance
+- Upgraded domapic-service dependency
+
+### Fixed
+- Write homebridge config in domapic storage folder instead of a child of package folder
+
 ## [1.0.0-beta.1] - 2018-12-07
 ### Added
 - First prerelease
