@@ -1,11 +1,13 @@
 const test = require('narval')
 
 const SwitchFactoryMocks = require('../lib/plugins/SwitchFactory.mocks')
+const StatelessSwitchFactoryMocks = require('../lib/plugins/StatelessSwitchFactory.mocks')
 const HomebridgeMocks = require('../Homebridge.mocks')
 
 test.describe('plugin', () => {
   let sandbox
   let switchFactory
+  let statelessSwitchFactory
   let homebridge
   let plugin
 
@@ -13,6 +15,7 @@ test.describe('plugin', () => {
     sandbox = test.sinon.createSandbox()
     homebridge = new HomebridgeMocks()
     switchFactory = new SwitchFactoryMocks()
+    statelessSwitchFactory = new StatelessSwitchFactoryMocks()
     plugin = require('../../../plugin/index')
     plugin(homebridge.stubs)
   })
@@ -20,6 +23,7 @@ test.describe('plugin', () => {
   test.after(() => {
     sandbox.restore()
     switchFactory.restore()
+    statelessSwitchFactory.restore()
   })
 
   test.it('should create a new Switch accessory', () => {

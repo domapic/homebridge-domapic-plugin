@@ -45,6 +45,18 @@ test.describe('Homebridge Config', () => {
         service: {
           _id: 'foo-service-id-2'
         }
+      },
+      {
+        _id: 'foo-id-3',
+        _service: 'foo-service-id-3',
+        name: 'foo-name-3',
+        action: true,
+        service: {
+          _id: 'foo-service-id-3',
+          name: 'foo-service-name-3',
+          package: 'foo-service-package-3',
+          processId: 'foo-service-processId-3'
+        }
       }
     ]
     domapic = new DomapicMocks()
@@ -72,11 +84,12 @@ test.describe('Homebridge Config', () => {
   })
 
   test.describe('write method', () => {
-    const homebridgeConfigPath = path.resolve(__dirname, '..', '..', '..', 'homebridge', 'config.json')
+    const homebridgeConfigPath = path.resolve(__dirname, '..', '..', '..', 'homebridge')
+    const homebridgeConfigFile = path.resolve(homebridgeConfigPath, 'config.json')
     test.it('should write abilities based configuration in homebridge folder', () => {
       return homebridgeConfig.write(fooAbilities)
         .then(() => {
-          return test.expect(fsExtra.stubs.writeJson.getCall(0).args[0]).to.equal(homebridgeConfigPath)
+          return test.expect(fsExtra.stubs.writeJson.getCall(0).args[0]).to.equal(homebridgeConfigFile)
         })
     })
 
@@ -93,7 +106,23 @@ test.describe('Homebridge Config', () => {
               serviceName: 'foo-service-name',
               servicePackageName: 'foo-service-package',
               serviceProcessId: 'foo-service-processId'
+            }, {
+              abilityName: 'foo-name-3',
+              accessory: 'DomapicStatelessSwitch',
+              apiKey: 'foo-key',
+              bridgeUrl: 'http://foo-host:foo-port/api/controller/abilities/foo-id-3',
+              name: 'foo-service-name-3 foo-name-3',
+              serviceName: 'foo-service-name-3',
+              servicePackageName: 'foo-service-package-3',
+              serviceProcessId: 'foo-service-processId-3'
             }])
+        })
+    })
+
+    test.it('should ensure that homebridge folder exists', () => {
+      return homebridgeConfig.write(fooAbilities)
+        .then(() => {
+          return test.expect(fsExtra.stubs.ensureDirSync.getCall(0).args[0]).to.equal(homebridgeConfigPath)
         })
     })
 
@@ -101,6 +130,30 @@ test.describe('Homebridge Config', () => {
       return homebridgeConfig.write(fooAbilities)
         .then(() => {
           return test.expect(fsExtra.stubs.writeJson.getCall(0).args[1].bridge.port).to.equal(fooConfig.homebridgePort)
+        })
+    })
+
+    test.it('should set name based on plugin name', () => {
+      return homebridgeConfig.write(fooAbilities)
+        .then(() => {
+          return test.expect(fsExtra.stubs.writeJson.getCall(0).args[1].bridge.name).to.equal(fooConfig.name)
+        })
+    })
+
+    test.it('should set username based on previously stored mac', () => {
+      const fooMac = 'foo-mac'
+      domapic.stubs.plugin.storage.get.withArgs('username_mac').resolves(fooMac)
+      return homebridgeConfig.write(fooAbilities)
+        .then(() => {
+          return test.expect(fsExtra.stubs.writeJson.getCall(0).args[1].bridge.username).to.equal(fooMac)
+        })
+    })
+
+    test.it('should save a new mac if there is no one in storage', () => {
+      domapic.stubs.plugin.storage.get.withArgs('username_mac').rejects(new Error())
+      return homebridgeConfig.write(fooAbilities)
+        .then(() => {
+          return test.expect(domapic.stubs.plugin.storage.set.getCall(0).args[0]).to.equal('username_mac')
         })
     })
   })
