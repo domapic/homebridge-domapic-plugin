@@ -7,6 +7,12 @@ const FsExtraMocks = require('../FsExtra.mocks')
 const IpMocks = require('../Ip.mocks')
 
 test.describe('Homebridge Config', () => {
+  const fooConfig = {
+    homebridgePort: 3422,
+    port: 'foo-port',
+    hostName: '',
+    name: 'foo-name'
+  }
   let HomebridgeConfig
   let homebridgeConfig
   let ip
@@ -46,10 +52,7 @@ test.describe('Homebridge Config', () => {
     ip = new IpMocks()
     HomebridgeConfig = require('../../../lib/HomebridgeConfig')
 
-    domapic.stubs.plugin.config.get.resolves({
-      port: 'foo-port',
-      hostName: ''
-    })
+    domapic.stubs.plugin.config.get.resolves(fooConfig)
 
     ip.stubs.address.returns('foo-host')
 
@@ -69,7 +72,7 @@ test.describe('Homebridge Config', () => {
   })
 
   test.describe('write method', () => {
-    const homebridgeConfigPath = path.resolve(__dirname, '..', '..', '..', '.homebridge', 'config.json')
+    const homebridgeConfigPath = path.resolve(__dirname, '..', '..', '..', 'homebridge', 'config.json')
     test.it('should write abilities based configuration in homebridge folder', () => {
       return homebridgeConfig.write(fooAbilities)
         .then(() => {
@@ -95,11 +98,9 @@ test.describe('Homebridge Config', () => {
     })
 
     test.it('should set port based on homebridgePort plugin configuration', () => {
-      const fooPort = 3422
-      domapic.stubs.plugin.config.get.withArgs('homebridgePort').resolves(fooPort)
       return homebridgeConfig.write(fooAbilities)
         .then(() => {
-          return test.expect(fsExtra.stubs.writeJson.getCall(0).args[1].bridge.port).to.equal(fooPort)
+          return test.expect(fsExtra.stubs.writeJson.getCall(0).args[1].bridge.port).to.equal(fooConfig.homebridgePort)
         })
     })
   })

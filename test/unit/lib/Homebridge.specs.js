@@ -36,7 +36,7 @@ test.describe('HomeBridge', () => {
     const packagePath = path.resolve(__dirname, '..', '..', '..')
     const pluginPath = path.resolve(packagePath, 'plugin')
     const binPath = path.resolve(packagePath, 'node_modules', '.bin', 'homebridge')
-    const homebridgePath = path.resolve(packagePath, '.homebridge')
+    const homebridgePath = path.resolve(packagePath, 'homebridge')
 
     test.it('should copy the plugin package.json file to the plugin folder', () => {
       const origin = path.resolve(packagePath, 'lib', 'plugin-package.json')

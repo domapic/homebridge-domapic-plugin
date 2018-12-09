@@ -9,7 +9,8 @@ const Mock = function () {
 
   const stubs = {
     copy: sandbox.stub().resolves(),
-    writeJson: sandbox.stub().resolves()
+    writeJson: sandbox.stub().resolves(),
+    ensureDirSync: sandbox.stub()
   }
 
   const restore = () => {
