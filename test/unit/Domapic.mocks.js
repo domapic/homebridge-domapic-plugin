@@ -22,7 +22,8 @@ const Mock = function () {
     },
     storage: {
       get: sandbox.stub().resolves(),
-      set: sandbox.stub().resolves()
+      set: sandbox.stub().resolves(),
+      getPath: sandbox.stub().resolves('')
     },
     tracer: {
       info: sandbox.stub().resolves(),

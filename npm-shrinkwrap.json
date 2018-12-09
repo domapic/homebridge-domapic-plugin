@@ -1,6 +1,6 @@
 {
   "name": "homebridge-domapic-plugin",
-  "version": "1.0.0-beta.1",
+  "version": "1.0.0-beta.2",
   "lockfileVersion": 1,
   "requires": true,
   "dependencies": {
@@ -31,9 +31,9 @@
       }
     },
     "@pm2/agent-node": {
-      "version": "1.0.12",
-      "resolved": "https://registry.npmjs.org/@pm2/agent-node/-/agent-node-1.0.12.tgz",
-      "integrity": "sha512-wbTc68qSEZ9nnAYFYQKN9xSrQAeukkPvzpktz140EKq7iNkpRnW1UFmUez3PgX8diIHzc0TUCE2D1F7KxAj72Q==",
+      "version": "1.1.0",
+      "resolved": "https://registry.npmjs.org/@pm2/agent-node/-/agent-node-1.1.0.tgz",
+      "integrity": "sha512-mgs/WwI2y+4CCn4wdkEwrbIxhRtp4uokKt7q2SvanZwR6MxnrWH9qU2uZGKJg23PGlv48imYG6MZv0zUFfWPoQ==",
       "requires": {
         "debug": "^3.1.0",
         "eventemitter2": "^5.0.1",
@@ -1423,9 +1423,9 @@
       }
     },
     "domapic-base": {
-      "version": "1.0.0-beta.17",
-      "resolved": "https://registry.npmjs.org/domapic-base/-/domapic-base-1.0.0-beta.17.tgz",
-      "integrity": "sha512-d3wFDdOc3bhI8iFeBTSGeNS62DbVFkQ6xgfaqYtUdHW0Qw2Yw2ENcVuokj5QKGBP9S0duu7tDHQpwCTfw+BowA==",
+      "version": "1.0.0-beta.18",
+      "resolved": "https://registry.npmjs.org/domapic-base/-/domapic-base-1.0.0-beta.18.tgz",
+      "integrity": "sha512-1YeH1PXQFTCPdViVNT9R7SZs59JuPGS8WMolez6Kn3oPV+06NNfb4GSeAoM2Z8O6689biruRoi2khPhnC1VTwg==",
       "requires": {
         "bluebird": "3.5.2",
         "body-parser": "1.18.3",
@@ -1466,27 +1466,29 @@
             "jsonfile": "^4.0.0",
             "universalify": "^0.1.0"
           }
-        },
-        "lodash": {
-          "version": "4.17.11",
-          "resolved": "https://registry.npmjs.org/lodash/-/lodash-4.17.11.tgz",
-          "integrity": "sha512-cQKh8igo5QUhZ7lg38DYWAxMvjSAKG0A8wGSVimP07SIUEK2UO+arSRKbRZWtelMtN5V0Hkwh5ryOto/SshYIg=="
         }
       }
     },
     "domapic-service": {
-      "version": "1.0.0-alpha.3",
-      "resolved": "https://registry.npmjs.org/domapic-service/-/domapic-service-1.0.0-alpha.3.tgz",
-      "integrity": "sha512-3Lisnrkj4VfBGypLuFk3GWScXmiuiAQBAiCVi5TBwREM9g7xx2Rypon5xo7Q6g3T9Qu3ziGvlHsiujwN66G6Ig==",
+      "version": "1.0.0-alpha.4",
+      "resolved": "https://registry.npmjs.org/domapic-service/-/domapic-service-1.0.0-alpha.4.tgz",
+      "integrity": "sha512-AwLT1pKIwvkzWuE2KFsL12cvJddEWHBTf0WlzC9cAcTxqfYLWxiCuHinrvvfCOtPe9JYcvn7/8FsEKzLfcQdnQ==",
       "requires": {
         "bluebird": "3.5.1",
         "deep-equal": "1.0.1",
-        "domapic-base": "1.0.0-beta.17",
+        "domapic-base": "1.0.0-beta.18",
         "ip": "1.1.5",
         "is-promise": "2.1.0",
         "jsonschema": "1.2.4",
         "lodash": "4.17.10",
         "rand-token": "0.4.0"
+      },
+      "dependencies": {
+        "lodash": {
+          "version": "4.17.10",
+          "resolved": "https://registry.npmjs.org/lodash/-/lodash-4.17.10.tgz",
+          "integrity": "sha512-UejweD1pDoXu+AD825lWwp4ZGtSwgnpZxb3JDViD7StjQz+Nb/6l093lx4OQ0foGWNRoc19mWy7BzL+UAK2iVg=="
+        }
       }
     },
     "dont-sniff-mimetype": {
@@ -3982,9 +3984,9 @@
       }
     },
     "lodash": {
-      "version": "4.17.10",
-      "resolved": "https://registry.npmjs.org/lodash/-/lodash-4.17.10.tgz",
-      "integrity": "sha512-UejweD1pDoXu+AD825lWwp4ZGtSwgnpZxb3JDViD7StjQz+Nb/6l093lx4OQ0foGWNRoc19mWy7BzL+UAK2iVg=="
+      "version": "4.17.11",
+      "resolved": "https://registry.npmjs.org/lodash/-/lodash-4.17.11.tgz",
+      "integrity": "sha512-cQKh8igo5QUhZ7lg38DYWAxMvjSAKG0A8wGSVimP07SIUEK2UO+arSRKbRZWtelMtN5V0Hkwh5ryOto/SshYIg=="
     },
     "lodash.debounce": {
       "version": "4.0.8",
@@ -4498,6 +4500,12 @@
             "source-map": "^0.4.4",
             "uglify-js": "^2.6"
           }
+        },
+        "lodash": {
+          "version": "4.17.10",
+          "resolved": "https://registry.npmjs.org/lodash/-/lodash-4.17.10.tgz",
+          "integrity": "sha512-UejweD1pDoXu+AD825lWwp4ZGtSwgnpZxb3JDViD7StjQz+Nb/6l093lx4OQ0foGWNRoc19mWy7BzL+UAK2iVg==",
+          "dev": true
         },
         "strip-ansi": {
           "version": "4.0.0",
@@ -5386,6 +5394,11 @@
       "version": "0.4.0",
       "resolved": "https://registry.npmjs.org/rand-token/-/rand-token-0.4.0.tgz",
       "integrity": "sha512-FLNNsir2R+XY8LKsZ+8u/w0qZ4sGit7cpNdznsI77cAVob6UlVPueDKRyjJ3W1Q6FJLgAVH98JvlqqpSaL7NEQ=="
+    },
+    "random-mac": {
+      "version": "0.0.4",
+      "resolved": "https://registry.npmjs.org/random-mac/-/random-mac-0.0.4.tgz",
+      "integrity": "sha1-NlD3Bbb592XbQiM34fl0eKuSIVw="
     },
     "range-parser": {
       "version": "1.2.0",
