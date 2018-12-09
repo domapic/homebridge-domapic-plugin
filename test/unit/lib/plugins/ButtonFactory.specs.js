@@ -3,7 +3,7 @@ const test = require('narval')
 const HomebridgeMocks = require('../../Homebridge.mocks')
 const RequestPromiseMocks = require('../../RequestPromise.mocks')
 
-test.describe('Stateless Switch Plugin Factory', () => {
+test.describe('Button Plugin Factory', () => {
   let homebridge
   let requestPromise
   let SwitchFactory
@@ -29,7 +29,7 @@ test.describe('Stateless Switch Plugin Factory', () => {
     homebridge = new HomebridgeMocks()
     requestPromise = new RequestPromiseMocks()
 
-    SwitchFactory = require('../../../../lib/plugins/StatelessSwitchFactory')
+    SwitchFactory = require('../../../../lib/plugins/ButtonFactory')
     Switch = new SwitchFactory(homebridge.stubs.hap.Service, homebridge.stubs.hap.Characteristic)
     switchPlugin = new Switch(log, fooConfig)
   })
@@ -40,13 +40,13 @@ test.describe('Stateless Switch Plugin Factory', () => {
     requestPromise.restore()
   })
 
-  test.describe('Switch static name getter', () => {
+  test.describe('Button static name getter', () => {
     test.it('should return accessory name', () => {
-      test.expect(Switch.name).to.equal('DomapicStatelessSwitch')
+      test.expect(Switch.name).to.equal('DomapicButton')
     })
   })
 
-  test.describe('Switch instance', () => {
+  test.describe('Button instance', () => {
     test.describe('logError method', () => {
       test.it('should log error message', () => {
         const FOO_MESSAGE = 'Foo error message'

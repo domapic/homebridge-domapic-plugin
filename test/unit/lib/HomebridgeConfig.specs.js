@@ -108,7 +108,7 @@ test.describe('Homebridge Config', () => {
               serviceProcessId: 'foo-service-processId'
             }, {
               abilityName: 'foo-name-3',
-              accessory: 'DomapicStatelessSwitch',
+              accessory: 'DomapicButton',
               apiKey: 'foo-key',
               bridgeUrl: 'http://foo-host:foo-port/api/controller/abilities/foo-id-3',
               name: 'foo-service-name-3 foo-name-3',
