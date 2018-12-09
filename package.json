@@ -30,7 +30,8 @@
     "fs-extra": "7.0.1",
     "homebridge": "0.4.45",
     "ip": "1.1.5",
-    "lodash": "4.17.10",
+    "lodash": "4.17.11",
+    "random-mac": "0.0.4",
     "request-promise": "4.2.2",
     "tree-kill": "1.2.1"
   },
