@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.0.0-beta.2] - 2018-12-09
 ### Added
-- Add StatelessSwitch accessory
+- Add Button accessory. Register abilities with action and no data type defined as Buttons
 
 ### Changed
 - Set Homebridge server name from service name

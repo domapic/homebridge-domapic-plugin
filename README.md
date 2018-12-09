@@ -18,7 +18,10 @@ Since Siri supports devices added through HomeKit, this means that **with this p
 * _"Siri, open the garage door"_
 * _"Siri, activate my awesome webhook"_
 
-> For now, only abilities which have "boolean" data type and have both `state` and `action` are being exposed as HomeKit `Switch` accessories. Soon will be added custom plugin configuration for abilities to [Domapic Controller][domapic-controller-url], and then the user will be able to decide which type of accessory should be each ability, as long as data type is compatible.
+> For now, only certain types of abilities are being registered as accessories:  
+	- Abilities that have "boolean" data type and have both `state` and `action` are being exposed as HomeKit `Switch` accesories.  
+	- Abilities without data type that have an `action` defined are being exposed as Buttons. (HomeKit Switch returning always `false` as state).  
+	Soon will be added custom plugin configuration for abilities to [Domapic Controller][domapic-controller-url], and then the user will be able to decide which type of accessory should be each ability, as long as data type is compatible.
 
 ## Prerequisites
 
