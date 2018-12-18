@@ -2,7 +2,7 @@ const test = require('narval')
 
 const mockery = require('../mockery')
 
-const MODULE = './lib/Abilities'
+const MODULE = './lib/Accessories'
 
 const Mock = function () {
   let sandbox = test.sinon.createSandbox()

@@ -2,14 +2,14 @@ const test = require('narval')
 
 const DomapicMocks = require('../Domapic.mocks')
 
-test.describe('Abilities', () => {
+test.describe.skip('Accesories', () => {
   let Abilities
   let abilities
   let domapic
 
   test.before(() => {
     domapic = new DomapicMocks()
-    Abilities = require('../../../lib/Abilities')
+    Abilities = require('../../../lib/Accessories')
   })
 
   test.after(() => {
