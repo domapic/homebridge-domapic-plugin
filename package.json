@@ -26,7 +26,7 @@
     "domapic-homebridge": "./bin/domapic-homebridge"
   },
   "dependencies": {
-    "domapic-service": "1.0.0-alpha.4",
+    "domapic-service": "1.0.0-alpha.5",
     "fs-extra": "7.0.1",
     "homebridge": "0.4.45",
     "ip": "1.1.5",
