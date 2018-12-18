@@ -7,10 +7,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [unreleased]
 ### Added
 ### Changed
-- Use controller services and configs instead of abilities to map HomeKit accessories
-- Upgrade domapic-service dependency
 ### Fixed
 ### Removed
+
+## [1.0.0-beta.3] - 2018-12-18
+### Added
+- Use controller services and configs instead of abilities to map HomeKit accessories
+- Upgrade domapic-service dependency
+- Add ContactSensor Plugin Factory.
+- Extend plugins factories from Plugin Class.
+- Use CharacteristicMethods Class for all plugins bridges
 
 ## [1.0.0-beta.2] - 2018-12-09
 ### Added
