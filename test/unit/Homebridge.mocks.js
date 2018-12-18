@@ -24,6 +24,14 @@ const Mock = function () {
       getCharacteristic: sandbox.stub().callsFake(() => {
         return instances.switch
       })
+    },
+    contactSensor: {
+      on: sandbox.stub().callsFake(() => {
+        return instances.switch
+      }),
+      getCharacteristic: sandbox.stub().callsFake(() => {
+        return instances.switch
+      })
     }
   }
 
@@ -38,6 +46,10 @@ const Mock = function () {
 
   stubs.hap.Service.Switch = sandbox.stub().callsFake(function () {
     return instances.switch
+  })
+
+  stubs.hap.Service.ContactSensor = sandbox.stub().callsFake(function () {
+    return instances.contactSensor
   })
 
   const restore = () => {

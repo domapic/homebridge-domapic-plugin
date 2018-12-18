@@ -32,7 +32,7 @@ Also read the system requisites of [Homebridge][homebridge-url], which is used u
 ## Installation
 
 ```bash
-npm i homebridge-domapic-plugin -g
+npm i homebridge-domapic-plugin -g --unsafe-perm
 ```
 
 ## Start the plugin

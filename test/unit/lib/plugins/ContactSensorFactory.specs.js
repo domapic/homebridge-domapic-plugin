@@ -1,16 +1,14 @@
 const test = require('narval')
 
 const HomebridgeMocks = require('../../Homebridge.mocks')
-const RequestPromiseMocks = require('../../RequestPromise.mocks')
 const CharacteristicMethodsMocks = require('./common/CharacteristicMethods.mocks')
 
-test.describe('Switch Plugin Factory', () => {
+test.describe('ContactSensor Plugin Factory', () => {
   let homebridge
-  let requestPromise
   let characteristicMethods
-  let SwitchFactory
-  let Switch
-  let switchPlugin
+  let ContactSensorFactory
+  let ContactSensor
+  let contactSensorPlugin
   let fooConfig
   let sandbox
   let log
@@ -19,18 +17,14 @@ test.describe('Switch Plugin Factory', () => {
     sandbox = test.sinon.createSandbox()
     log = sandbox.stub()
     fooConfig = {
-      accessory: 'Switch',
-      name: 'Switch Domapic',
+      accessory: 'ContactSensor',
+      name: 'ContactSensor Domapic',
       apiKey: 'foo-key',
       abilitiesBridgeUrl: 'http://foo-host:foo-port/api/controller/abilities/',
       characteristics: [
         {
-          characteristic: 'On',
+          characteristic: 'ContactSensorState',
           get: {
-            ability: 'ability-id',
-            dataType: 'boolean'
-          },
-          set: {
             ability: 'ability-id',
             dataType: 'boolean'
           }
@@ -42,24 +36,22 @@ test.describe('Switch Plugin Factory', () => {
       serviceProcessId: 'foo-service-processId'
     }
     homebridge = new HomebridgeMocks()
-    requestPromise = new RequestPromiseMocks()
     characteristicMethods = new CharacteristicMethodsMocks()
 
-    SwitchFactory = require('../../../../lib/plugins/SwitchFactory')
-    Switch = new SwitchFactory(homebridge.stubs.hap.Service, homebridge.stubs.hap.Characteristic)
-    switchPlugin = new Switch(log, fooConfig)
+    ContactSensorFactory = require('../../../../lib/plugins/ContactSensorFactory')
+    ContactSensor = new ContactSensorFactory(homebridge.stubs.hap.Service, homebridge.stubs.hap.Characteristic)
+    contactSensorPlugin = new ContactSensor(log, fooConfig)
   })
 
   test.afterEach(() => {
     sandbox.restore()
     homebridge.restore()
-    requestPromise.restore()
     characteristicMethods.restore()
   })
 
   test.describe('Switch static name getter', () => {
     test.it('should return accessory name', () => {
-      test.expect(Switch.name).to.equal('Switch')
+      test.expect(ContactSensor.name).to.equal('ContactSensor')
     })
   })
 
@@ -68,14 +60,14 @@ test.describe('Switch Plugin Factory', () => {
       test.it('should log error message', () => {
         const FOO_MESSAGE = 'Foo error message'
         const error = new Error(FOO_MESSAGE)
-        switchPlugin.logError(error)
+        contactSensorPlugin.logError(error)
         test.expect(log).to.have.been.calledWith(`ERROR: ${FOO_MESSAGE}`)
       })
     })
 
     test.describe('getServices method', () => {
       test.it('should set accesory Manufacturer as Domapic', () => {
-        switchPlugin.getServices()
+        contactSensorPlugin.getServices()
         test.expect(homebridge.instances.accessoryInformation.setCharacteristic).to.have.been.calledWith(
           homebridge.stubs.hap.Characteristic.Manufacturer,
           'Domapic'
@@ -83,7 +75,7 @@ test.describe('Switch Plugin Factory', () => {
       })
 
       test.it('should set accesory Model with configuration servicePackageName', () => {
-        switchPlugin.getServices()
+        contactSensorPlugin.getServices()
         test.expect(homebridge.instances.accessoryInformation.setCharacteristic).to.have.been.calledWith(
           homebridge.stubs.hap.Characteristic.Model,
           'foo-service-package'
@@ -91,7 +83,7 @@ test.describe('Switch Plugin Factory', () => {
       })
 
       test.it('should set accesory SerialNumber with configuration serviceProcessId', () => {
-        switchPlugin.getServices()
+        contactSensorPlugin.getServices()
         test.expect(homebridge.instances.accessoryInformation.setCharacteristic).to.have.been.calledWith(
           homebridge.stubs.hap.Characteristic.SerialNumber,
           'foo-service-processId'
