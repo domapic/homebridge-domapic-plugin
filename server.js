@@ -25,7 +25,7 @@ domapic.createPlugin({
   const restartHomebridge = debounce(async (event) => {
     await homebridgeConfig.write(await accessories.get())
     homebridge.restart()
-  }, 5000)
+  }, 10000)
 
   dmpcPlugin.events.on('service:updated', restartHomebridge)
   dmpcPlugin.events.on('service:created', restartHomebridge)

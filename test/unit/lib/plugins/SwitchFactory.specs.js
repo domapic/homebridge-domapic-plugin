@@ -17,12 +17,25 @@ test.describe('Switch Plugin Factory', () => {
     sandbox = test.sinon.createSandbox()
     log = sandbox.stub()
     fooConfig = {
-      abilityName: 'foo-name',
-      accessory: 'DomapicSwitch',
-      apiKey: 'foo-api-key',
-      bridgeUrl: 'foo-url/foo-id',
-      name: 'foo-service-name foo-name',
+      accessory: 'Switch',
+      name: 'Switch Domapic',
+      apiKey: 'foo-key',
+      abilitiesBridgeUrl: 'http://foo-host:foo-port/api/controller/abilities/',
+      characteristics: [
+        {
+          characteristic: 'On',
+          get: {
+            ability: 'ability-id',
+            dataType: 'boolean'
+          },
+          set: {
+            ability: 'ability-id',
+            dataType: 'boolean'
+          }
+        }
+      ],
       serviceName: 'foo-service-name',
+      serviceVersion: '1.0.0',
       servicePackageName: 'foo-service-package',
       serviceProcessId: 'foo-service-processId'
     }
@@ -42,7 +55,7 @@ test.describe('Switch Plugin Factory', () => {
 
   test.describe('Switch static name getter', () => {
     test.it('should return accessory name', () => {
-      test.expect(Switch.name).to.equal('DomapicSwitch')
+      test.expect(Switch.name).to.equal('Switch')
     })
   })
 
