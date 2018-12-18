@@ -102,12 +102,89 @@ test.describe('Switch Plugin Factory', () => {
         )
       })
 
+      test.it('should have configured switch service to call "getSwitchOnFixtureCharacteristic" method on get event if no ability is defined for get', () => {
+        switchPlugin = new Switch(log, {
+          ...fooConfig,
+          characteristics: [
+            {
+              characteristic: 'On',
+              get: {
+                fixture: false,
+                dataType: 'boolean'
+              },
+              set: {
+                ability: 'ability-id',
+                dataType: 'boolean'
+              }
+            }
+          ]
+        })
+        switchPlugin.getServices()
+        test.expect(homebridge.instances.switch.on).to.have.been.calledWith(
+          'get',
+          switchPlugin.getSwitchOnFixtureCharacteristic
+        )
+      })
+
       test.it('should have configured switch service to call "setSwitchOnCharacteristic" method on set event', () => {
         switchPlugin.getServices()
         test.expect(homebridge.instances.switch.on).to.have.been.calledWith(
           'set',
           switchPlugin.setSwitchOnCharacteristic
         )
+      })
+
+      test.it('should have configured switch service to call "setSwitchOnFixtureCharacteristic" method on set event if no ability is defined for set', () => {
+        switchPlugin = new Switch(log, {
+          ...fooConfig,
+          characteristics: [
+            {
+              characteristic: 'On',
+              get: {
+                fixture: false,
+                dataType: 'boolean'
+              },
+              set: {
+                fixture: true,
+                dataType: 'boolean'
+              }
+            }
+          ]
+        })
+        switchPlugin.getServices()
+        test.expect(homebridge.instances.switch.on).to.have.been.calledWith(
+          'set',
+          switchPlugin.setSwitchOnFixtureCharacteristic
+        )
+      })
+    })
+
+    test.describe('getSwitchOnFixtureCharacteristic method', () => {
+      test.it('should invoque callback with fixture value', () => {
+        switchPlugin = new Switch(log, {
+          ...fooConfig,
+          characteristics: [
+            {
+              characteristic: 'On',
+              get: {
+                fixture: false,
+                dataType: 'boolean'
+              },
+              set: {
+                fixture: true,
+                dataType: 'boolean'
+              }
+            }
+          ]
+        })
+        const cb = sandbox.stub()
+        return switchPlugin.getSwitchOnFixtureCharacteristic(cb)
+          .then(() => {
+            return Promise.all([
+              test.expect(requestPromise.stub).to.not.have.been.called(),
+              test.expect(cb).to.have.been.calledWith(null, false)
+            ])
+          })
       })
     })
 
@@ -138,6 +215,36 @@ test.describe('Switch Plugin Factory', () => {
       })
     })
 
+    test.describe('setSwitchOnFixtureCharacteristic method', () => {
+      test.it('should invoque callback with no value', () => {
+        switchPlugin = new Switch(log, {
+          ...fooConfig,
+          characteristics: [
+            {
+              characteristic: 'On',
+              get: {
+                fixture: false,
+                dataType: 'boolean'
+              },
+              set: {
+                fixture: true,
+                dataType: 'boolean'
+              }
+            }
+          ]
+        })
+        const cb = sandbox.stub()
+        return switchPlugin.setSwitchOnFixtureCharacteristic(cb)
+          .then(() => {
+            return Promise.all([
+              test.expect(requestPromise.stub).to.not.have.been.called(),
+              test.expect(cb).to.have.been.called(),
+              test.expect(cb.getCall(0).args[0]).to.be.undefined()
+            ])
+          })
+      })
+    })
+
     test.describe('setSwitchOnCharacteristic method', () => {
       test.it('should call to request plugin bridge api, and invoque callback with no data if request is success', () => {
         const fooData = 'foo'
@@ -147,6 +254,34 @@ test.describe('Switch Plugin Factory', () => {
           .then(() => {
             return Promise.all([
               test.expect(requestPromise.stub.getCall(0).args[0].body.data).to.equal(fooData),
+              test.expect(cb).to.have.been.called()
+            ])
+          })
+      })
+
+      test.it('should call to request plugin bridge api with no data if ability has no dataType', () => {
+        switchPlugin = new Switch(log, {
+          ...fooConfig,
+          characteristics: [
+            {
+              characteristic: 'On',
+              get: {
+                fixture: false,
+                dataType: 'boolean'
+              },
+              set: {
+                ability: 'foo-ability'
+              }
+            }
+          ]
+        })
+        const fooData = 'foo'
+        requestPromise.stub.resolves()
+        const cb = sandbox.stub()
+        return switchPlugin.setSwitchOnCharacteristic(fooData, cb)
+          .then(() => {
+            return Promise.all([
+              test.expect(requestPromise.stub.getCall(0).args[0].body).to.be.undefined(),
               test.expect(cb).to.have.been.called()
             ])
           })
