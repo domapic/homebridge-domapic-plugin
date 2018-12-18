@@ -2,14 +2,14 @@ const test = require('narval')
 
 const DomapicMocks = require('../Domapic.mocks')
 
-test.describe.skip('Accesories', () => {
-  let Abilities
-  let abilities
+test.describe('Accesories', () => {
+  let Accessories
+  let accessories
   let domapic
 
   test.before(() => {
     domapic = new DomapicMocks()
-    Abilities = require('../../../lib/Accessories')
+    Accessories = require('../../../lib/Accessories')
   })
 
   test.after(() => {
@@ -18,65 +18,305 @@ test.describe.skip('Accesories', () => {
 
   test.describe('get method', () => {
     test.beforeEach(() => {
+      domapic.stubs.plugin.controller.services.get.resolves([])
       domapic.stubs.plugin.controller.abilities.get.resolves([])
-      abilities = new Abilities(domapic.stubs.plugin)
+      accessories = new Accessories(domapic.stubs.plugin)
     })
 
     test.it('should get abilities from controller', () => {
-      return abilities.get()
+      return accessories.get()
         .then(() => {
           return test.expect(domapic.stubs.plugin.controller.abilities.get).to.have.been.called()
         })
     })
 
     test.it('should get services from controller', () => {
-      return abilities.get()
+      return accessories.get()
         .then(() => {
           return test.expect(domapic.stubs.plugin.controller.services.get).to.have.been.called()
         })
     })
 
-    test.it('should return all abilities, adding the correspondant service data to each one', () => {
+    test.describe('when plugin configuration exists for a service in the controller', () => {
       const fooAbilities = [
         {
           _id: 'foo-id',
+          name: 'switch',
           _service: 'foo-service-id'
-        },
-        {
-          _id: 'foo-id-2',
-          _service: 'foo-service-id-2'
         }
       ]
       const fooServices = [
         {
-          _id: 'foo-service-id'
-        },
-        {
-          _id: 'foo-service-id-2'
+          _id: 'foo-service-id',
+          name: 'Foo Service'
         }
       ]
-      domapic.stubs.plugin.controller.abilities.get.resolves(fooAbilities)
-      domapic.stubs.plugin.controller.services.get.resolves(fooServices)
-      abilities = new Abilities(domapic.stubs.plugin)
-      return abilities.get()
-        .then(result => {
-          return test.expect(result).to.deep.equal([
+      let fooConfig = [{
+        pluginPackageName: 'homebridge-domapic-plugin',
+        config: {
+          accessories: [
             {
-              _id: 'foo-id',
-              _service: 'foo-service-id',
-              service: {
-                _id: 'foo-service-id'
-              }
+              accessory: 'Switch',
+              name: 'Foo Switch',
+              characteristics: [
+                {
+                  characteristic: 'On',
+                  get: {
+                    ability: 'switch'
+                  },
+                  set: {
+                    ability: 'switch'
+                  }
+                }
+              ]
             },
             {
-              _id: 'foo-id-2',
-              _service: 'foo-service-id-2',
-              service: {
-                _id: 'foo-service-id-2'
-              }
+              accessory: 'Switch',
+              characteristics: [
+                {
+                  characteristic: 'On',
+                  get: {
+                    fixture: true
+                  },
+                  set: {
+                    ability: 'switch'
+                  }
+                }
+              ]
+            },
+            {
+              accessory: 'Switch',
+              name: 'Foo Switch 2',
+              characteristics: [
+                {
+                  characteristic: 'On',
+                  set: {
+                    ability: 'switch'
+                  }
+                }
+              ]
+            },
+            {
+              accessory: 'Switch',
+              characteristics: [
+              ]
             }
-          ])
-        })
+          ]
+        }
+      }]
+
+      test.beforeEach(() => {
+        domapic.stubs.plugin.controller.abilities.get.resolves(fooAbilities)
+        domapic.stubs.plugin.controller.services.get.resolves(fooServices)
+      })
+
+      test.it('should return accessories based on existing configuration', () => {
+        domapic.stubs.plugin.controller.servicePluginConfigs.get.resolves(fooConfig)
+        return accessories.get()
+          .then(result => {
+            return test.expect(result).to.deep.equal([
+              {
+                accessory: 'Switch',
+                characteristics: [
+                  {
+                    characteristic: 'On',
+                    get: {
+                      ability: 'foo-id',
+                      dataType: undefined
+                    },
+                    set: {
+                      ability: 'foo-id',
+                      dataType: undefined
+                    }
+                  }
+                ],
+                name: 'Foo Service Foo Switch',
+                service: {
+                  _id: 'foo-service-id',
+                  name: 'Foo Service'
+                }
+              },
+              {
+                accessory: 'Switch',
+                characteristics: [
+                  {
+                    characteristic: 'On',
+                    get: {
+                      fixture: true
+                    },
+                    set: {
+                      ability: 'foo-id',
+                      dataType: undefined
+                    }
+                  }
+                ],
+                name: 'Foo Service Switch',
+                service: {
+                  _id: 'foo-service-id',
+                  name: 'Foo Service'
+                }
+              },
+              {
+                accessory: 'Switch',
+                characteristics: [
+                  {
+                    characteristic: 'On',
+                    get: null,
+                    set: {
+                      ability: 'foo-id',
+                      dataType: undefined
+                    }
+                  }
+                ],
+                name: 'Foo Service Foo Switch 2',
+                service: {
+                  _id: 'foo-service-id',
+                  name: 'Foo Service'
+                }
+              }
+            ])
+          })
+      })
+
+      test.it('should omit accessories with wrong configuration', () => {
+        fooConfig = [{
+          pluginPackageName: 'homebridge-domapic-plugin',
+          config: {
+            accessories: [
+              {
+                accessory: 'Switch',
+                name: 'Foo Switch',
+                csha_racteristics: [
+                  {
+                    characteristic: 'On',
+                    get: {
+                      ability: 'switch'
+                    },
+                    set: {
+                      ability: 'switch'
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }]
+        domapic.stubs.plugin.controller.servicePluginConfigs.get.resolves(fooConfig)
+        return accessories.get()
+          .then(result => {
+            return test.expect(result).to.deep.equal([])
+          })
+      })
+    })
+
+    test.describe('when plugin configuration does not exist for a service in the controller', () => {
+      let fooAbilities = []
+      const fooServices = [
+        {
+          _id: 'foo-service-id',
+          name: 'Foo Service'
+        }
+      ]
+
+      test.beforeEach(() => {
+        domapic.stubs.plugin.controller.services.get.resolves(fooServices)
+        domapic.stubs.plugin.controller.servicePluginConfigs.get.resolves([])
+      })
+
+      test.it('should create default configuration for abilities with action, state, and boolean data type', () => {
+        fooAbilities = [{
+          _id: 'foo-id',
+          name: 'switch',
+          _service: 'foo-service-id',
+          type: 'boolean',
+          action: true,
+          state: true
+        }]
+        domapic.stubs.plugin.controller.abilities.get.resolves(fooAbilities)
+        return accessories.get()
+          .then(result => {
+            return test.expect(result).to.deep.equal([
+              {
+                accessory: 'Switch',
+                characteristics: [
+                  {
+                    characteristic: 'On',
+                    get: {
+                      ability: 'foo-id',
+                      dataType: 'boolean'
+                    },
+                    set: {
+                      ability: 'foo-id',
+                      dataType: 'boolean'
+                    }
+                  }
+                ],
+                name: 'Foo Service Foo Service switch',
+                service: {
+                  _id: 'foo-service-id',
+                  name: 'Foo Service'
+                }
+              }
+            ])
+          })
+      })
+
+      test.it('should create default configuration for abilities with action, and no data type', () => {
+        fooAbilities = [{
+          _id: 'foo-id',
+          name: 'switch',
+          _service: 'foo-service-id',
+          action: true
+        }]
+        domapic.stubs.plugin.controller.abilities.get.resolves(fooAbilities)
+        return accessories.get()
+          .then(result => {
+            return test.expect(result).to.deep.equal([
+              {
+                accessory: 'Switch',
+                characteristics: [
+                  {
+                    characteristic: 'On',
+                    get: {
+                      fixture: false
+                    },
+                    set: {
+                      ability: 'foo-id',
+                      dataType: undefined
+                    }
+                  }
+                ],
+                name: 'Foo Service Foo Service switch',
+                service: {
+                  _id: 'foo-service-id',
+                  name: 'Foo Service'
+                }
+              }
+            ])
+          })
+      })
+
+      test.it('should call to create default configuration in controller', () => {
+        fooAbilities = [{
+          _id: 'foo-id',
+          name: 'switch',
+          _service: 'foo-service-id',
+          type: 'number',
+          action: true,
+          state: true
+        }]
+        domapic.stubs.plugin.controller.abilities.get.resolves(fooAbilities)
+        return accessories.get()
+          .then(result => {
+            return test.expect(domapic.stubs.plugin.controller.servicePluginConfigs.create).to.have.been.calledWith({
+              pluginPackageName: 'homebridge-domapic-plugin',
+              _service: 'foo-service-id',
+              config: {
+                accessories: []
+              }
+            })
+          })
+      })
     })
   })
 })
