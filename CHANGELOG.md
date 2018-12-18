@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ## [unreleased]
 ### Added
 ### Changed
+- Use controller services and configs instead of abilities to map HomeKit accessories
+- Upgrade domapic-service dependency
 ### Fixed
 ### Removed
 

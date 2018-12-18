@@ -1,6 +1,6 @@
 {
   "name": "homebridge-domapic-plugin",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.3",
   "lockfileVersion": 1,
   "requires": true,
   "dependencies": {
@@ -1063,7 +1063,7 @@
     },
     "content-disposition": {
       "version": "0.5.2",
-      "resolved": "http://registry.npmjs.org/content-disposition/-/content-disposition-0.5.2.tgz",
+      "resolved": "https://registry.npmjs.org/content-disposition/-/content-disposition-0.5.2.tgz",
       "integrity": "sha1-DPaLud318r55YcOoUXjLhdunjLQ="
     },
     "content-security-policy-builder": {
@@ -3378,7 +3378,7 @@
     },
     "is-accessor-descriptor": {
       "version": "0.1.6",
-      "resolved": "http://registry.npmjs.org/is-accessor-descriptor/-/is-accessor-descriptor-0.1.6.tgz",
+      "resolved": "https://registry.npmjs.org/is-accessor-descriptor/-/is-accessor-descriptor-0.1.6.tgz",
       "integrity": "sha1-qeEss66Nh2cn7u84Q/igiXtcmNY=",
       "requires": {
         "kind-of": "^3.0.2"
@@ -3420,7 +3420,7 @@
     },
     "is-data-descriptor": {
       "version": "0.1.4",
-      "resolved": "http://registry.npmjs.org/is-data-descriptor/-/is-data-descriptor-0.1.4.tgz",
+      "resolved": "https://registry.npmjs.org/is-data-descriptor/-/is-data-descriptor-0.1.4.tgz",
       "integrity": "sha1-C17mSDiOLIYCgueT8YVv7D8wG1Y=",
       "requires": {
         "kind-of": "^3.0.2"
@@ -6804,7 +6804,7 @@
         },
         "string-width": {
           "version": "1.0.2",
-          "resolved": "http://registry.npmjs.org/string-width/-/string-width-1.0.2.tgz",
+          "resolved": "https://registry.npmjs.org/string-width/-/string-width-1.0.2.tgz",
           "integrity": "sha1-EYvfW4zcUaKn5w0hHgfisLmxB9M=",
           "requires": {
             "code-point-at": "^1.0.0",
