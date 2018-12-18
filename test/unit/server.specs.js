@@ -4,17 +4,17 @@ const test = require('narval')
 
 const LodashMocks = require('./Lodash.mocks')
 const DomapicMocks = require('./Domapic.mocks')
-const AbilitiesMocks = require('./lib/Abilities.mocks')
+const AccessoriesMocks = require('./lib/Accessories.mocks')
 const AbilitiesBridgeMocks = require('./lib/api/AbilitiesBridge.mocks')
 const HomebridgeMocks = require('./lib/Homebridge.mocks')
 const HomebridgeConfigMocks = require('./lib/HomebridgeConfig.mocks')
 
 test.describe('server', () => {
   const fooOperations = 'foo operations'
-  const fooAbilities = 'foo abilities'
+  const fooAccessories = 'foo abilities'
   let lodash
   let domapic
-  let abilities
+  let accessories
   let abilitiesBridgeMocks
   let homebridge
   let homebridgeConfig
@@ -22,12 +22,12 @@ test.describe('server', () => {
   test.before(() => {
     lodash = new LodashMocks()
     domapic = new DomapicMocks()
-    abilities = new AbilitiesMocks()
+    accessories = new AccessoriesMocks()
     abilitiesBridgeMocks = new AbilitiesBridgeMocks()
     homebridge = new HomebridgeMocks()
     homebridgeConfig = new HomebridgeConfigMocks()
 
-    abilities.stubs.instance.get.resolves(fooAbilities)
+    accessories.stubs.instance.get.resolves(fooAccessories)
     abilitiesBridgeMocks.stubs.instance.operations.returns(fooOperations)
 
     require('../../server')
@@ -36,7 +36,7 @@ test.describe('server', () => {
   test.after(() => {
     lodash.restore()
     domapic.restore()
-    abilities.restore()
+    accessories.restore()
     abilitiesBridgeMocks.restore()
     homebridge.restore()
     homebridgeConfig.restore()
@@ -53,10 +53,15 @@ test.describe('server', () => {
 
     test.it('should add listeners to restart homebridge when abilities are added, updated or deleted, or service is updated', () => {
       return Promise.all([
-        test.expect(domapic.stubs.plugin.events.on.getCall(0).args[0]).to.equal('ability:updated'),
-        test.expect(domapic.stubs.plugin.events.on.getCall(1).args[0]).to.equal('ability:created'),
-        test.expect(domapic.stubs.plugin.events.on.getCall(2).args[0]).to.equal('ability:deleted'),
-        test.expect(domapic.stubs.plugin.events.on.getCall(3).args[0]).to.equal('service:updated')
+        test.expect(domapic.stubs.plugin.events.on.getCall(0).args[0]).to.equal('service:updated'),
+        test.expect(domapic.stubs.plugin.events.on.getCall(1).args[0]).to.equal('service:created'),
+        test.expect(domapic.stubs.plugin.events.on.getCall(2).args[0]).to.equal('service:deleted'),
+        test.expect(domapic.stubs.plugin.events.on.getCall(3).args[0]).to.equal('servicePluginConfig:created'),
+        test.expect(domapic.stubs.plugin.events.on.getCall(4).args[0]).to.equal('servicePluginConfig:updated'),
+        test.expect(domapic.stubs.plugin.events.on.getCall(5).args[0]).to.equal('servicePluginConfig:deleted'),
+        test.expect(domapic.stubs.plugin.events.on.getCall(6).args[0]).to.equal('ability:updated'),
+        test.expect(domapic.stubs.plugin.events.on.getCall(7).args[0]).to.equal('ability:created'),
+        test.expect(domapic.stubs.plugin.events.on.getCall(8).args[0]).to.equal('ability:deleted')
       ])
     })
 
@@ -76,12 +81,12 @@ test.describe('server', () => {
         await lodash.utils.getDebounceCallback()()
       })
 
-      test.it('should get abilities from controller', () => {
-        test.expect(abilities.stubs.instance.get).to.have.been.called()
+      test.it('should get accessories from controller', () => {
+        test.expect(accessories.stubs.instance.get).to.have.been.called()
       })
 
-      test.it('should write homebridge configuration based in controller abilities', () => {
-        test.expect(homebridgeConfig.stubs.instance.write).to.have.been.calledWith(fooAbilities)
+      test.it('should write homebridge configuration based in controller accessories', () => {
+        test.expect(homebridgeConfig.stubs.instance.write).to.have.been.calledWith(fooAccessories)
       })
 
       test.it('should restart homebridge', () => {

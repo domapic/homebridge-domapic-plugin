@@ -2,7 +2,7 @@ const test = require('narval')
 
 const mockery = require('../../mockery')
 
-const MODULE = '../lib/plugins/ButtonFactory'
+const MODULE = '../lib/plugins/ContactSensorFactory'
 
 const Mock = function () {
   let sandbox = test.sinon.createSandbox()

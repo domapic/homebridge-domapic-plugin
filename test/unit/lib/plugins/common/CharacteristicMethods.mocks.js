@@ -1,14 +1,15 @@
 const test = require('narval')
 
-const mockery = require('../mockery')
+const mockery = require('../../../mockery')
 
-const MODULE = './lib/Abilities'
+const MODULE = './common/CharacteristicMethods'
 
 const Mock = function () {
   let sandbox = test.sinon.createSandbox()
 
   const instanceStubs = {
-    get: sandbox.stub()
+    get: sandbox.stub().resolves(),
+    set: sandbox.stub().resolves()
   }
 
   const stub = sandbox.stub().callsFake(function () {

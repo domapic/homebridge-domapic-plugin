@@ -46,6 +46,10 @@ const Mock = function () {
       },
       services: {
         get: sandbox.stub().resolves()
+      },
+      servicePluginConfigs: {
+        create: sandbox.stub().resolves(),
+        get: sandbox.stub().resolves()
       }
     }
   }

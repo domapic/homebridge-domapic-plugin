@@ -18,45 +18,53 @@ test.describe('Homebridge Config', () => {
   let ip
   let fsExtra
   let domapic
-  let fooAbilities
+  let fooAccessories
 
   test.beforeEach(() => {
-    fooAbilities = [
+    fooAccessories = [
       {
-        _id: 'foo-id',
-        _service: 'foo-service-id',
-        name: 'foo-name',
-        type: 'boolean',
-        action: true,
-        state: true,
+        accessory: 'Switch',
+        name: 'Switch Domapic',
         service: {
           _id: 'foo-service-id',
           name: 'foo-service-name',
           package: 'foo-service-package',
-          processId: 'foo-service-processId'
-        }
+          processId: 'foo-service-processId',
+          version: '1.0.0'
+        },
+        characteristics: [
+          {
+            characteristic: 'On',
+            get: {
+              ability: 'ability-id'
+            },
+            set: {
+              ability: 'ability-id'
+            }
+          }
+        ]
       },
       {
-        _id: 'foo-id-2',
-        _service: 'foo-service-id-2',
-        type: 'boolean',
-        action: false,
-        state: true,
+        accessory: 'Switch',
+        name: 'Switch Domapic 2',
         service: {
-          _id: 'foo-service-id-2'
-        }
-      },
-      {
-        _id: 'foo-id-3',
-        _service: 'foo-service-id-3',
-        name: 'foo-name-3',
-        action: true,
-        service: {
-          _id: 'foo-service-id-3',
-          name: 'foo-service-name-3',
-          package: 'foo-service-package-3',
-          processId: 'foo-service-processId-3'
-        }
+          _id: 'foo-service-id-2',
+          name: 'foo-service-name-2',
+          package: 'foo-service-package-2',
+          processId: 'foo-service-processId-2',
+          version: '2.0.0'
+        },
+        characteristics: [
+          {
+            characteristic: 'On',
+            get: {
+              fixture: false
+            },
+            set: {
+              ability: 'ability-id-2'
+            }
+          }
+        ]
       }
     ]
     domapic = new DomapicMocks()
@@ -86,55 +94,77 @@ test.describe('Homebridge Config', () => {
   test.describe('write method', () => {
     const homebridgeConfigPath = path.resolve(__dirname, '..', '..', '..', 'homebridge')
     const homebridgeConfigFile = path.resolve(homebridgeConfigPath, 'config.json')
-    test.it('should write abilities based configuration in homebridge folder', () => {
-      return homebridgeConfig.write(fooAbilities)
+    test.it('should write accessories based configuration in homebridge folder', () => {
+      return homebridgeConfig.write(fooAccessories)
         .then(() => {
           return test.expect(fsExtra.stubs.writeJson.getCall(0).args[0]).to.equal(homebridgeConfigFile)
         })
     })
 
-    test.it('should write accesories based in provided abilities', () => {
-      return homebridgeConfig.write(fooAbilities)
+    test.it('should write accesories based in provided accesories', () => {
+      return homebridgeConfig.write(fooAccessories)
         .then(() => {
           return test.expect(fsExtra.stubs.writeJson.getCall(0).args[1].accessories).to.deep.equal(
             [{
-              abilityName: 'foo-name',
-              accessory: 'DomapicSwitch',
+              accessory: 'Switch',
+              name: 'Switch Domapic',
               apiKey: 'foo-key',
-              bridgeUrl: 'http://foo-host:foo-port/api/controller/abilities/foo-id',
-              name: 'foo-service-name foo-name',
+              abilitiesBridgeUrl: 'http://foo-host:foo-port/api/controller/abilities/',
+              characteristics: [
+                {
+                  characteristic: 'On',
+                  get: {
+                    ability: 'ability-id'
+                  },
+                  set: {
+                    ability: 'ability-id'
+                  }
+                }
+              ],
               serviceName: 'foo-service-name',
+              serviceVersion: '1.0.0',
               servicePackageName: 'foo-service-package',
               serviceProcessId: 'foo-service-processId'
             }, {
-              abilityName: 'foo-name-3',
-              accessory: 'DomapicButton',
+              accessory: 'Switch',
+              name: 'Switch Domapic 2',
               apiKey: 'foo-key',
-              bridgeUrl: 'http://foo-host:foo-port/api/controller/abilities/foo-id-3',
-              name: 'foo-service-name-3 foo-name-3',
-              serviceName: 'foo-service-name-3',
-              servicePackageName: 'foo-service-package-3',
-              serviceProcessId: 'foo-service-processId-3'
+              abilitiesBridgeUrl: 'http://foo-host:foo-port/api/controller/abilities/',
+              characteristics: [
+                {
+                  characteristic: 'On',
+                  get: {
+                    fixture: false
+                  },
+                  set: {
+                    ability: 'ability-id-2'
+                  }
+                }
+              ],
+              serviceName: 'foo-service-name-2',
+              serviceVersion: '2.0.0',
+              servicePackageName: 'foo-service-package-2',
+              serviceProcessId: 'foo-service-processId-2'
             }])
         })
     })
 
     test.it('should ensure that homebridge folder exists', () => {
-      return homebridgeConfig.write(fooAbilities)
+      return homebridgeConfig.write(fooAccessories)
         .then(() => {
           return test.expect(fsExtra.stubs.ensureDirSync.getCall(0).args[0]).to.equal(homebridgeConfigPath)
         })
     })
 
     test.it('should set port based on homebridgePort plugin configuration', () => {
-      return homebridgeConfig.write(fooAbilities)
+      return homebridgeConfig.write(fooAccessories)
         .then(() => {
           return test.expect(fsExtra.stubs.writeJson.getCall(0).args[1].bridge.port).to.equal(fooConfig.homebridgePort)
         })
     })
 
     test.it('should set name based on plugin name', () => {
-      return homebridgeConfig.write(fooAbilities)
+      return homebridgeConfig.write(fooAccessories)
         .then(() => {
           return test.expect(fsExtra.stubs.writeJson.getCall(0).args[1].bridge.name).to.equal(fooConfig.name)
         })
@@ -143,7 +173,7 @@ test.describe('Homebridge Config', () => {
     test.it('should set username based on previously stored mac', () => {
       const fooMac = 'foo-mac'
       domapic.stubs.plugin.storage.get.withArgs('username_mac').resolves(fooMac)
-      return homebridgeConfig.write(fooAbilities)
+      return homebridgeConfig.write(fooAccessories)
         .then(() => {
           return test.expect(fsExtra.stubs.writeJson.getCall(0).args[1].bridge.username).to.equal(fooMac)
         })
@@ -151,78 +181,10 @@ test.describe('Homebridge Config', () => {
 
     test.it('should save a new mac if there is no one in storage', () => {
       domapic.stubs.plugin.storage.get.withArgs('username_mac').rejects(new Error())
-      return homebridgeConfig.write(fooAbilities)
+      return homebridgeConfig.write(fooAccessories)
         .then(() => {
           return test.expect(domapic.stubs.plugin.storage.set.getCall(0).args[0]).to.equal('username_mac')
         })
-    })
-  })
-
-  test.describe('getSwitchs method', () => {
-    test.it('should return all abilities having boolean type, state and action', () => {
-      const fooPluginConnection = {
-        url: 'foo-url/',
-        apiKey: 'foo-api-key'
-      }
-      fooAbilities = [
-        {
-          _id: 'foo-id',
-          _service: 'foo-service-id',
-          name: 'foo-name',
-          type: 'boolean',
-          action: true,
-          state: true,
-          service: {
-            _id: 'foo-service-id',
-            name: 'foo-service-name',
-            package: 'foo-service-package',
-            processId: 'foo-service-processId'
-          }
-        },
-        {
-          _id: 'foo-id-2',
-          _service: 'foo-service-id-2',
-          type: 'boolean',
-          action: false,
-          state: true,
-          service: {
-            _id: 'foo-service-id-2'
-          }
-        },
-        {
-          _id: 'foo-id-2',
-          _service: 'foo-service-id-2',
-          name: 'foo-name-2',
-          type: 'boolean',
-          action: true,
-          state: true,
-          service: {
-            _id: 'foo-service-id-2',
-            name: 'foo-service-name-2',
-            package: 'foo-service-package-2',
-            processId: 'foo-service-processId-2'
-          }
-        }
-      ]
-      test.expect(homebridgeConfig.getSwitchs(fooAbilities, fooPluginConnection)).to.deep.equal([{
-        abilityName: 'foo-name',
-        accessory: 'DomapicSwitch',
-        apiKey: 'foo-api-key',
-        bridgeUrl: 'foo-url/foo-id',
-        name: 'foo-service-name foo-name',
-        serviceName: 'foo-service-name',
-        servicePackageName: 'foo-service-package',
-        serviceProcessId: 'foo-service-processId'
-      }, {
-        abilityName: 'foo-name-2',
-        accessory: 'DomapicSwitch',
-        apiKey: 'foo-api-key',
-        bridgeUrl: 'foo-url/foo-id-2',
-        name: 'foo-service-name-2 foo-name-2',
-        serviceName: 'foo-service-name-2',
-        servicePackageName: 'foo-service-package-2',
-        serviceProcessId: 'foo-service-processId-2'
-      }])
     })
   })
 
