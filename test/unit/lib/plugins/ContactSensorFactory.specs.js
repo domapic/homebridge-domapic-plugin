@@ -53,13 +53,13 @@ test.describe('ContactSensor Plugin Factory', () => {
     notificationsBridge.restore()
   })
 
-  test.describe('Switch static name getter', () => {
+  test.describe('ContactSensor static name getter', () => {
     test.it('should return accessory name', () => {
       test.expect(ContactSensor.name).to.equal('ContactSensor')
     })
   })
 
-  test.describe('Switch instance', () => {
+  test.describe('ContactSensor instance', () => {
     test.describe('logError method', () => {
       test.it('should log error message', () => {
         const FOO_MESSAGE = 'Foo error message'
@@ -92,6 +92,13 @@ test.describe('ContactSensor Plugin Factory', () => {
           homebridge.stubs.hap.Characteristic.SerialNumber,
           'foo-service-processId'
         )
+      })
+
+      test.it('should update ContactSensorState value when receives a contactSensor notification', () => {
+        contactSensorPlugin.getServices()
+        const notificationCallBack = characteristicMethods.stubs.instance.emitter.on.getCall(0).args[1]
+        notificationCallBack(true)
+        test.expect(homebridge.instances.contactSensor.updateValue).to.have.been.calledWith(true)
       })
     })
   })
