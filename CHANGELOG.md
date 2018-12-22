@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Removed
 
+## [1.0.0-beta.4] - 2018-12-22
+
 ## [1.0.0-beta.3] - 2018-12-18
 ### Added
 - Use controller services and configs instead of abilities to map HomeKit accessories
