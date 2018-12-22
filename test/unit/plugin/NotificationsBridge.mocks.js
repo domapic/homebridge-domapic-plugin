@@ -7,12 +7,14 @@ const MODULE = './NotificationsBridge'
 const Mock = function () {
   let sandbox = test.sinon.createSandbox()
 
+  const pluginStubs = {
+    getEmitter: sandbox.stub().returns({
+      on: sandbox.stub()
+    })
+  }
+
   const instanceStubs = {
-    getPluginNotifier: sandbox.stub().returns({
-      getEmitter: sandbox.stub().returns({
-        on: sandbox.stub()
-      })
-    }),
+    getPluginNotifier: sandbox.stub().returns(pluginStubs),
     init: sandbox.stub()
   }
 
@@ -31,7 +33,8 @@ const Mock = function () {
     restore,
     stubs: {
       Constructor: stub,
-      instance: instanceStubs
+      instance: instanceStubs,
+      plugin: pluginStubs
     }
   }
 }
