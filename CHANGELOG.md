@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ## [1.0.0-beta.4] - 2018-12-22
+### Changed
+- Change accessories default name. Add service name after accesory name.
 
 ## [1.0.0-beta.3] - 2018-12-18
 ### Added

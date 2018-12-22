@@ -130,7 +130,7 @@ test.describe('Accesories', () => {
                     }
                   }
                 ],
-                name: 'Foo Service Foo Switch',
+                name: 'Foo Switch Foo Service',
                 service: {
                   _id: 'foo-service-id',
                   name: 'Foo Service'
@@ -150,7 +150,7 @@ test.describe('Accesories', () => {
                     }
                   }
                 ],
-                name: 'Foo Service Switch',
+                name: 'Switch Foo Service',
                 service: {
                   _id: 'foo-service-id',
                   name: 'Foo Service'
@@ -168,7 +168,7 @@ test.describe('Accesories', () => {
                     }
                   }
                 ],
-                name: 'Foo Service Foo Switch 2',
+                name: 'Foo Switch 2 Foo Service',
                 service: {
                   _id: 'foo-service-id',
                   name: 'Foo Service'
@@ -251,7 +251,7 @@ test.describe('Accesories', () => {
                     }
                   }
                 ],
-                name: 'Foo Service Foo Service switch',
+                name: 'Foo Service switch Foo Service',
                 service: {
                   _id: 'foo-service-id',
                   name: 'Foo Service'
@@ -286,7 +286,7 @@ test.describe('Accesories', () => {
                     }
                   }
                 ],
-                name: 'Foo Service Foo Service switch',
+                name: 'Foo Service switch Foo Service',
                 service: {
                   _id: 'foo-service-id',
                   name: 'Foo Service'
