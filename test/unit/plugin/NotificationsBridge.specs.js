@@ -2,7 +2,7 @@ const test = require('narval')
 
 const ExpressMocks = require('../Express.mocks')
 
-test.describe.only('Notifications Bridge', () => {
+test.describe('Notifications Bridge', () => {
   let sandbox
   let NotificationsBridge
   let notificationsBridge
