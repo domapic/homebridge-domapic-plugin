@@ -4,7 +4,7 @@ const EventEmitter = require('events')
 
 const bodyParser = require('body-parser')
 const express = require('express')
-const { debounce } = require('lodash')
+const _ = require('lodash')
 const Boom = require('boom')
 
 const { NOTIFY_EVENT, API_KEY_HEADER } = require('../lib/statics')
@@ -15,8 +15,7 @@ class Server {
   constructor () {
     this._app = express()
     this._app.use(bodyParser.json())
-    // this._app.use(this.checkApiKey.bind(this))
-    this.init = debounce(this.init, 5000)
+    this.init = _.debounce(this.init.bind(this), 5000)
 
     this.getPluginNotifier = this.getPluginNotifier.bind(this)
   }
@@ -24,8 +23,10 @@ class Server {
   init () {
     this._app.use('*', this.notFound.bind(this))
     this._app.use(this.errorHandler.bind(this))
-    console.log(`Starting notifications bridge server at port ${this._port}`)
-    this._app.listen(this._port)
+
+    this._app.listen(this._port, () => {
+      console.log(`Notifications bridge server started and listening at port ${this._port}`)
+    })
   }
 
   checkApiKey (req, res, next) {
