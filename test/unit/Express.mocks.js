@@ -9,7 +9,8 @@ const Mock = function () {
 
   const instance = {
     use: sandbox.stub(),
-    listen: sandbox.stub()
+    listen: sandbox.stub(),
+    post: sandbox.stub()
   }
 
   const stub = sandbox.stub().callsFake(() => {

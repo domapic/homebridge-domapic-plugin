@@ -1,5 +1,7 @@
 const test = require('narval')
 
+const Boom = require('boom')
+
 const ExpressMocks = require('../Express.mocks')
 
 test.describe('Notifications Bridge', () => {
@@ -8,6 +10,8 @@ test.describe('Notifications Bridge', () => {
   let notificationsBridge
   let express
   let lodash
+  let sendSpy
+  let resMock
 
   test.before(() => {
     sandbox = test.sinon.createSandbox()
@@ -15,6 +19,12 @@ test.describe('Notifications Bridge', () => {
     lodash = require('lodash')
     lodash = sandbox.stub(lodash, 'debounce').callsFake(cb => cb)
     sandbox.spy(console, 'log')
+    sendSpy = sandbox.spy()
+    resMock = {
+      status: sandbox.stub().returns({
+        send: sendSpy
+      })
+    }
     NotificationsBridge = require('../../../plugin/NotificationsBridge')
     notificationsBridge = new NotificationsBridge()
   })
@@ -98,7 +108,6 @@ test.describe('Notifications Bridge', () => {
 
   test.describe('notFound middleware', () => {
     test.it('should call to next middleware with a not found error', () => {
-      notificationsBridge = new NotificationsBridge()
       const spy = sandbox.spy()
       notificationsBridge.notFound({}, {}, spy)
       test.expect(spy.getCall(0).args[0]).to.be.instanceOf(Error)
@@ -107,12 +116,59 @@ test.describe('Notifications Bridge', () => {
   })
 
   test.describe('errorHandler middleware', () => {
-    test.it('should call to next middleware with a not found error', () => {
-      notificationsBridge = new NotificationsBridge()
-      const spy = sandbox.spy()
-      notificationsBridge.notFound({}, {}, spy)
-      test.expect(spy.getCall(0).args[0]).to.be.instanceOf(Error)
-      test.expect(spy.getCall(0).args[0].output.statusCode).to.equal(404)
+    test.it('should set status code from received error if it is a Boom error', () => {
+      notificationsBridge.errorHandler(Boom.notFound(), {}, resMock)
+      test.expect(resMock.status).to.have.been.calledWith(404)
+    })
+
+    test.it('should return a badImplementation error if received error is not Boom', () => {
+      notificationsBridge.errorHandler(new Error(), {}, resMock)
+      test.expect(resMock.status).to.have.been.calledWith(500)
+    })
+  })
+
+  test.describe('pluginNotifier method', () => {
+    test.it('should return a getEmitter method', () => {
+      test.expect(notificationsBridge.getPluginNotifier().getEmitter).to.not.be.undefined()
+    })
+
+    test.describe('getEmitter method', () => {
+      const fooAccesoryName = 'foo-accessory'
+      let getEmitter
+      let logMethods
+
+      test.beforeEach(() => {
+        logMethods = {
+          log: sandbox.spy()
+        }
+        getEmitter = notificationsBridge.getPluginNotifier(fooAccesoryName, logMethods).getEmitter
+      })
+
+      test.it('should add an express route for received ability', () => {
+        getEmitter('foo-id')
+        test.expect(express.instance.post.getCall(0).args[0]).to.equal('/foo-id')
+      })
+
+      test.describe('ability middleware', () => {
+        let middleware
+        let emitter
+        test.before(() => {
+          emitter = getEmitter('foo-id')
+          middleware = express.instance.post.getCall(0).args[2]
+        })
+
+        test.it('should emit an event with received data', done => {
+          emitter.on('notify', data => {
+            test.expect(data).to.equal(true)
+            done()
+          })
+          middleware({
+            body: {
+              data: true
+            }
+          }, resMock)
+        })
+      })
     })
   })
 })

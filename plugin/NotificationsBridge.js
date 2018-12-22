@@ -45,7 +45,6 @@ class Server {
     const error = Boom.isBoom(err) ? err : Boom.badImplementation(err.message)
     console.log(`Notifications bridge error: ${error.output.statusCode}. Output ${JSON.stringify(error.output.payload)}`)
     res.status(error.output.statusCode).send(error.output.payload)
-    next()
   }
 
   getPluginNotifier (name, logMethods) {
