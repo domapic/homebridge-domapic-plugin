@@ -2,9 +2,11 @@ const test = require('narval')
 
 const HomebridgeMocks = require('../../Homebridge.mocks')
 const CharacteristicMethodsMocks = require('./common/CharacteristicMethods.mocks')
+const NotificationsBridgeMocks = require('../../plugin/NotificationsBridge.mocks')
 
 test.describe('ContactSensor Plugin Factory', () => {
   let homebridge
+  let notificationsBridge
   let characteristicMethods
   let ContactSensorFactory
   let ContactSensor
@@ -37,9 +39,10 @@ test.describe('ContactSensor Plugin Factory', () => {
     }
     homebridge = new HomebridgeMocks()
     characteristicMethods = new CharacteristicMethodsMocks()
+    notificationsBridge = new NotificationsBridgeMocks()
 
     ContactSensorFactory = require('../../../../lib/plugins/ContactSensorFactory')
-    ContactSensor = new ContactSensorFactory(homebridge.stubs.hap.Service, homebridge.stubs.hap.Characteristic)
+    ContactSensor = new ContactSensorFactory(homebridge.stubs.hap.Service, homebridge.stubs.hap.Characteristic, notificationsBridge.stubs.instance)
     contactSensorPlugin = new ContactSensor(log, fooConfig)
   })
 
@@ -47,6 +50,7 @@ test.describe('ContactSensor Plugin Factory', () => {
     sandbox.restore()
     homebridge.restore()
     characteristicMethods.restore()
+    notificationsBridge.restore()
   })
 
   test.describe('Switch static name getter', () => {

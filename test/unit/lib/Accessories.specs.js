@@ -80,6 +80,9 @@ test.describe('Accesories', () => {
                   },
                   set: {
                     ability: 'switch'
+                  },
+                  notify: {
+                    ability: 'switch'
                   }
                 }
               ]
@@ -127,7 +130,8 @@ test.describe('Accesories', () => {
                     set: {
                       ability: 'foo-id',
                       dataType: undefined
-                    }
+                    },
+                    notify: null
                   }
                 ],
                 name: 'Foo Switch Foo Service',
@@ -145,6 +149,10 @@ test.describe('Accesories', () => {
                       fixture: true
                     },
                     set: {
+                      ability: 'foo-id',
+                      dataType: undefined
+                    },
+                    notify: {
                       ability: 'foo-id',
                       dataType: undefined
                     }
@@ -165,7 +173,8 @@ test.describe('Accesories', () => {
                     set: {
                       ability: 'foo-id',
                       dataType: undefined
-                    }
+                    },
+                    notify: null
                   }
                 ],
                 name: 'Foo Switch 2 Foo Service',
@@ -248,7 +257,8 @@ test.describe('Accesories', () => {
                     set: {
                       ability: 'foo-id',
                       dataType: 'boolean'
-                    }
+                    },
+                    notify: null
                   }
                 ],
                 name: 'Foo Service switch Foo Service',
@@ -283,7 +293,8 @@ test.describe('Accesories', () => {
                     set: {
                       ability: 'foo-id',
                       dataType: undefined
-                    }
+                    },
+                    notify: null
                   }
                 ],
                 name: 'Foo Service switch Foo Service',
