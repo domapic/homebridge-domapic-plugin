@@ -71,41 +71,41 @@ This plugin requires some extra configuration in modules in order to match the m
 This configuration can be found in the Domapic Controller, as "servicePluginConfigs" entities. Modules can define a default configuration for this plugin using the `addPluginConfig` method. (Read the [domapic-service documentation][domapic-service-url] for further info)
 
 > Certain types of abilities are registered as accessories automatically if no plugin configuration is found for the module:  
-	- Abilities that have "boolean" data type and have both `state` and `action` are being exposed as HomeKit `Switch` accesories.  
-	- Abilities without data type that have an `action` defined are being exposed as HomeKit `Switch` accesories, but returning always `false` as state.
+	- Abilities that have "boolean" data type and have both `state` and `action` are being exposed as HomeKit `Switch` accessories.  
+	- Abilities without data type that have an `action` defined are being exposed as HomeKit `Switch` accessories, but returning always `false` as state.
 
-Here is an example of a module configuration:
+Here is an example of an hypothetical module configuration:
 
 ```js
 {
-  "pluginPackageName": "homebridge-domapic-plugin", // DEFINE CONFIGURATION FOR THIS PLUGIN
+  "pluginPackageName": "homebridge-domapic-plugin", // DEFINE PLUGIN CONFIGURATION FOR THIS MODULE
   "config": {
-    "accessories": [
+    "accessories": [ // HomeKit Accessories for this module
       {
         "accessory": "Switch", // HomeKit Accessory name
         "characteristics": [
           {
             "characteristic": "On", // HomeKit Characteristic
             "get": {
-              "ability": "switch" // Module ability to use when Homekit calls to "read" Characteristic
+              "ability": "switch" // Module ability state to use when Homekit calls to "read" Characteristic
             },
             "set": {
-              "ability": "switch" // Module ability to use when Homekit calls to "write" Characteristic
-            } 
+              "ability": "switch" // Module ability action to use when Homekit calls to "write" Characteristic
+            }
           }
         ]
       },
       {
-        "accessory": "Switch", // HomeKit Accessory name
+        "accessory": "ContactSensor", // HomeKit Accessory name
         "characteristics": [
           {
-            "characteristic": "On", // HomeKit Characteristic
+            "characteristic": "ContactSensorState", // HomeKit Characteristic
             "get": {
               "fixture": true // When Homekit calls to "read" Characteristic will always return true.
             },
-            "set": {
-              "ability": "toggle" // Module ability to use when Homekit calls to "write" Characteristic
-            } 
+            "notify": {
+              "ability": "switch" // Module ability event that will change accessory value, and trigger a notification
+            }
           }
         ]
       }
@@ -119,10 +119,10 @@ Some points to take into account when defining configuration are:
 
 * Data type that a module ability handles has to be equivalent to the data type that the correspondant HomeKit Characteristic expects.
 * You can use the `fixture` property when a required Characteristic is not available in your module. (In this way, an ability with only an action and no state (a "button" behavior, for example), can be mapped into a "Switch" accessory, as seen in the example above)
-* A Domapic module can be mapped into one or many Homekit accesories, as seen in the example above.
+* A Domapic module can be mapped into one or many Homekit accessories, as seen in the example above.
 * Configuration can be modified by Domapic administrators in the Domapic Controller. The configuration defined programatically from module through the `addPluginConfig` method will define only the default configuration.
+* The "notify" property can be defined only for accessories supporting notifications on HomeKit. Otherwise will be ignored.
 * Read the [HAP-NodeJs][hap-nodejs-url] documentation to check all available HomeKit Accessories and required Characteristics for each of them, as well as expected data type for each Characteristic. Supported Accessories by this plugin are listed below.
-
 
 ## Supported HomeKit Accessories
 
@@ -131,7 +131,7 @@ Here is the list of currently supported HomeKit Accessories, and its related Cha
 * Switch
 	* On - `<boolean>` data type.
 * ContactSensor
-	* ContactSensorState - `<boolean>` data type.
+	* ContactSensorState - `<boolean>` data type. Available notifications.
 
 Accessories support will increase on next versions of this plugin.
 
