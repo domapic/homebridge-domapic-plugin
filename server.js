@@ -4,8 +4,11 @@ const path = require('path')
 
 const domapic = require('domapic-service')
 const { debounce } = require('lodash')
+const requestPromise = require('request-promise')
 
 const options = require('./lib/options')
+const { NOTIFICATIONS_BRIDGE_PORT, API_KEY_HEADER } = require('./lib/statics')
+const notificationsApiKey = require('./lib/notificationsApiKey')
 
 const abilitiesBridgeApi = require('./lib/api/abilities-bridge.json')
 const Accessories = require('./lib/Accessories')
@@ -17,6 +20,7 @@ domapic.createPlugin({
   packagePath: path.resolve(__dirname),
   customConfig: options
 }).then(async dmpcPlugin => {
+  const notificationsBridgePort = await dmpcPlugin.config.get(NOTIFICATIONS_BRIDGE_PORT)
   const accessories = new Accessories(dmpcPlugin)
   const abilitiesBridge = new AbilitiesBridge(dmpcPlugin)
   const homebridge = new Homebridge(dmpcPlugin)
@@ -37,6 +41,20 @@ domapic.createPlugin({
   dmpcPlugin.events.on('ability:created', restartHomebridge)
   dmpcPlugin.events.on('ability:deleted', restartHomebridge)
   dmpcPlugin.events.once('connection', restartHomebridge)
+
+  dmpcPlugin.events.on('ability:event', eventData => {
+    return requestPromise({
+      method: 'POST',
+      uri: `http://localhost:${notificationsBridgePort}/${eventData.data._id}`,
+      json: true,
+      headers: {
+        [API_KEY_HEADER]: notificationsApiKey
+      },
+      body: {
+        data: eventData.data.data
+      }
+    }).catch(() => {})
+  })
 
   await dmpcPlugin.api.extendOpenApi(abilitiesBridgeApi)
   await dmpcPlugin.api.addOperations(abilitiesBridge.operations())

@@ -3,9 +3,11 @@ const test = require('narval')
 const HomebridgeMocks = require('../../Homebridge.mocks')
 const RequestPromiseMocks = require('../../RequestPromise.mocks')
 const CharacteristicMethodsMocks = require('./common/CharacteristicMethods.mocks')
+const NotificationsBridgeMocks = require('../../plugin/NotificationsBridge.mocks')
 
 test.describe('Switch Plugin Factory', () => {
   let homebridge
+  let notificationsBridge
   let requestPromise
   let characteristicMethods
   let SwitchFactory
@@ -42,11 +44,12 @@ test.describe('Switch Plugin Factory', () => {
       serviceProcessId: 'foo-service-processId'
     }
     homebridge = new HomebridgeMocks()
+    notificationsBridge = new NotificationsBridgeMocks()
     requestPromise = new RequestPromiseMocks()
     characteristicMethods = new CharacteristicMethodsMocks()
 
     SwitchFactory = require('../../../../lib/plugins/SwitchFactory')
-    Switch = new SwitchFactory(homebridge.stubs.hap.Service, homebridge.stubs.hap.Characteristic)
+    Switch = new SwitchFactory(homebridge.stubs.hap.Service, homebridge.stubs.hap.Characteristic, notificationsBridge.stubs.instance)
     switchPlugin = new Switch(log, fooConfig)
   })
 
@@ -55,6 +58,7 @@ test.describe('Switch Plugin Factory', () => {
     homebridge.restore()
     requestPromise.restore()
     characteristicMethods.restore()
+    notificationsBridge.restore()
   })
 
   test.describe('Switch static name getter', () => {

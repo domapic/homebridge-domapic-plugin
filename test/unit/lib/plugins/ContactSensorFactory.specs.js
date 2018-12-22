@@ -2,9 +2,11 @@ const test = require('narval')
 
 const HomebridgeMocks = require('../../Homebridge.mocks')
 const CharacteristicMethodsMocks = require('./common/CharacteristicMethods.mocks')
+const NotificationsBridgeMocks = require('../../plugin/NotificationsBridge.mocks')
 
 test.describe('ContactSensor Plugin Factory', () => {
   let homebridge
+  let notificationsBridge
   let characteristicMethods
   let ContactSensorFactory
   let ContactSensor
@@ -37,9 +39,10 @@ test.describe('ContactSensor Plugin Factory', () => {
     }
     homebridge = new HomebridgeMocks()
     characteristicMethods = new CharacteristicMethodsMocks()
+    notificationsBridge = new NotificationsBridgeMocks()
 
     ContactSensorFactory = require('../../../../lib/plugins/ContactSensorFactory')
-    ContactSensor = new ContactSensorFactory(homebridge.stubs.hap.Service, homebridge.stubs.hap.Characteristic)
+    ContactSensor = new ContactSensorFactory(homebridge.stubs.hap.Service, homebridge.stubs.hap.Characteristic, notificationsBridge.stubs.instance)
     contactSensorPlugin = new ContactSensor(log, fooConfig)
   })
 
@@ -47,15 +50,16 @@ test.describe('ContactSensor Plugin Factory', () => {
     sandbox.restore()
     homebridge.restore()
     characteristicMethods.restore()
+    notificationsBridge.restore()
   })
 
-  test.describe('Switch static name getter', () => {
+  test.describe('ContactSensor static name getter', () => {
     test.it('should return accessory name', () => {
       test.expect(ContactSensor.name).to.equal('ContactSensor')
     })
   })
 
-  test.describe('Switch instance', () => {
+  test.describe('ContactSensor instance', () => {
     test.describe('logError method', () => {
       test.it('should log error message', () => {
         const FOO_MESSAGE = 'Foo error message'
@@ -88,6 +92,13 @@ test.describe('ContactSensor Plugin Factory', () => {
           homebridge.stubs.hap.Characteristic.SerialNumber,
           'foo-service-processId'
         )
+      })
+
+      test.it('should update ContactSensorState value when receives a contactSensor notification', () => {
+        contactSensorPlugin.getServices()
+        const notificationCallBack = characteristicMethods.stubs.instance.emitter.on.getCall(0).args[1]
+        notificationCallBack(true)
+        test.expect(homebridge.instances.contactSensor.updateValue).to.have.been.calledWith(true)
       })
     })
   })

@@ -80,6 +80,9 @@ test.describe('Accesories', () => {
                   },
                   set: {
                     ability: 'switch'
+                  },
+                  notify: {
+                    ability: 'switch'
                   }
                 }
               ]
@@ -127,10 +130,11 @@ test.describe('Accesories', () => {
                     set: {
                       ability: 'foo-id',
                       dataType: undefined
-                    }
+                    },
+                    notify: null
                   }
                 ],
-                name: 'Foo Service Foo Switch',
+                name: 'Foo Switch Foo Service',
                 service: {
                   _id: 'foo-service-id',
                   name: 'Foo Service'
@@ -147,10 +151,14 @@ test.describe('Accesories', () => {
                     set: {
                       ability: 'foo-id',
                       dataType: undefined
+                    },
+                    notify: {
+                      ability: 'foo-id',
+                      dataType: undefined
                     }
                   }
                 ],
-                name: 'Foo Service Switch',
+                name: 'Switch Foo Service',
                 service: {
                   _id: 'foo-service-id',
                   name: 'Foo Service'
@@ -165,10 +173,11 @@ test.describe('Accesories', () => {
                     set: {
                       ability: 'foo-id',
                       dataType: undefined
-                    }
+                    },
+                    notify: null
                   }
                 ],
-                name: 'Foo Service Foo Switch 2',
+                name: 'Foo Switch 2 Foo Service',
                 service: {
                   _id: 'foo-service-id',
                   name: 'Foo Service'
@@ -248,10 +257,11 @@ test.describe('Accesories', () => {
                     set: {
                       ability: 'foo-id',
                       dataType: 'boolean'
-                    }
+                    },
+                    notify: null
                   }
                 ],
-                name: 'Foo Service Foo Service switch',
+                name: 'Foo Service switch Foo Service',
                 service: {
                   _id: 'foo-service-id',
                   name: 'Foo Service'
@@ -283,10 +293,11 @@ test.describe('Accesories', () => {
                     set: {
                       ability: 'foo-id',
                       dataType: undefined
-                    }
+                    },
+                    notify: null
                   }
                 ],
-                name: 'Foo Service Foo Service switch',
+                name: 'Foo Service switch Foo Service',
                 service: {
                   _id: 'foo-service-id',
                   name: 'Foo Service'

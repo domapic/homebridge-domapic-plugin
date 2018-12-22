@@ -1,11 +1,13 @@
 const test = require('narval')
 
 const RequestPromiseMocks = require('../../../RequestPromise.mocks')
+const NotificationsBridgeMocks = require('../../../plugin/NotificationsBridge.mocks')
 
 test.describe('Characteristic Methods', () => {
   const fooUrl = 'foo-url'
   const fooRequestOptions = {}
   let requestPromise
+  let notificationsBridge
   let sandbox
   let CharacteristicMethods
   let characteristicMethods
@@ -24,12 +26,41 @@ test.describe('Characteristic Methods', () => {
       logError
     }
 
+    notificationsBridge = new NotificationsBridgeMocks()
     CharacteristicMethods = require('../../../../../lib/plugins/common/CharacteristicMethods')
   })
 
   test.afterEach(() => {
     sandbox.restore()
     requestPromise.restore()
+    notificationsBridge.restore()
+  })
+
+  test.describe('emitter', () => {
+    test.it('should have not been set if there is no an ability configured for notify', () => {
+      characteristicMethods = new CharacteristicMethods({
+        characteristic: 'On',
+        get: {
+          fixture: false,
+          dataType: 'boolean'
+        }
+      }, fooUrl)
+      test.expect(characteristicMethods.emitter).to.be.undefined()
+    })
+    test.it('should have been set if there is an ability configured for notify', () => {
+      characteristicMethods = new CharacteristicMethods({
+        characteristic: 'On',
+        get: {
+          fixture: false,
+          dataType: 'boolean'
+        },
+        notify: {
+          ability: 'ability-id',
+          dataType: 'boolean'
+        }
+      }, fooUrl, notificationsBridge.stubs.plugin)
+      test.expect(characteristicMethods.emitter).to.not.be.undefined()
+    })
   })
 
   test.describe('get method', () => {

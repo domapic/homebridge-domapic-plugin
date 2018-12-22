@@ -18,6 +18,7 @@ const Mock = function () {
       })
     },
     switch: {
+      updateValue: sandbox.stub(),
       on: sandbox.stub().callsFake(() => {
         return instances.switch
       }),
@@ -26,11 +27,12 @@ const Mock = function () {
       })
     },
     contactSensor: {
+      updateValue: sandbox.stub(),
       on: sandbox.stub().callsFake(() => {
-        return instances.switch
+        return instances.contactSensor
       }),
       getCharacteristic: sandbox.stub().callsFake(() => {
-        return instances.switch
+        return instances.contactSensor
       })
     }
   }

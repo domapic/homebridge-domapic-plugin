@@ -11,7 +11,8 @@ test.describe('Homebridge Config', () => {
     homebridgePort: 3422,
     port: 'foo-port',
     hostName: '',
-    name: 'foo-name'
+    name: 'foo-name',
+    notificationsBridgePort: 3423
   }
   let HomebridgeConfig
   let homebridgeConfig
@@ -19,6 +20,7 @@ test.describe('Homebridge Config', () => {
   let fsExtra
   let domapic
   let fooAccessories
+  let notificationsApiKey
 
   test.beforeEach(() => {
     fooAccessories = [
@@ -62,6 +64,9 @@ test.describe('Homebridge Config', () => {
             },
             set: {
               ability: 'ability-id-2'
+            },
+            notify: {
+              ability: 'ability-id-2'
             }
           }
         ]
@@ -70,6 +75,8 @@ test.describe('Homebridge Config', () => {
     domapic = new DomapicMocks()
     fsExtra = new FsExtraMocks()
     ip = new IpMocks()
+
+    notificationsApiKey = require('../../../lib/notificationsApiKey')
     HomebridgeConfig = require('../../../lib/HomebridgeConfig')
 
     domapic.stubs.plugin.config.get.resolves(fooConfig)
@@ -110,6 +117,8 @@ test.describe('Homebridge Config', () => {
               name: 'Switch Domapic',
               apiKey: 'foo-key',
               abilitiesBridgeUrl: 'http://foo-host:foo-port/api/controller/abilities/',
+              notificationsBridgePort: 3423,
+              notificationsApiKey,
               characteristics: [
                 {
                   characteristic: 'On',
@@ -130,6 +139,8 @@ test.describe('Homebridge Config', () => {
               name: 'Switch Domapic 2',
               apiKey: 'foo-key',
               abilitiesBridgeUrl: 'http://foo-host:foo-port/api/controller/abilities/',
+              notificationsBridgePort: 3423,
+              notificationsApiKey,
               characteristics: [
                 {
                   characteristic: 'On',
@@ -137,6 +148,9 @@ test.describe('Homebridge Config', () => {
                     fixture: false
                   },
                   set: {
+                    ability: 'ability-id-2'
+                  },
+                  notify: {
                     ability: 'ability-id-2'
                   }
                 }

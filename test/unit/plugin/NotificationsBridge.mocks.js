@@ -1,18 +1,21 @@
 const test = require('narval')
 
-const mockery = require('../../../mockery')
+const mockery = require('../mockery')
 
-const MODULE = './common/CharacteristicMethods'
+const MODULE = './NotificationsBridge'
 
 const Mock = function () {
   let sandbox = test.sinon.createSandbox()
 
+  const pluginStubs = {
+    getEmitter: sandbox.stub().returns({
+      on: sandbox.stub()
+    })
+  }
+
   const instanceStubs = {
-    get: sandbox.stub().resolves(),
-    set: sandbox.stub().resolves(),
-    emitter: {
-      on: sandbox.stub().resolves()
-    }
+    getPluginNotifier: sandbox.stub().returns(pluginStubs),
+    init: sandbox.stub()
   }
 
   const stub = sandbox.stub().callsFake(function () {
@@ -30,7 +33,8 @@ const Mock = function () {
     restore,
     stubs: {
       Constructor: stub,
-      instance: instanceStubs
+      instance: instanceStubs,
+      plugin: pluginStubs
     }
   }
 }
