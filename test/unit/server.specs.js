@@ -8,14 +8,17 @@ const AccessoriesMocks = require('./lib/Accessories.mocks')
 const AbilitiesBridgeMocks = require('./lib/api/AbilitiesBridge.mocks')
 const HomebridgeMocks = require('./lib/Homebridge.mocks')
 const HomebridgeConfigMocks = require('./lib/HomebridgeConfig.mocks')
+const RequestPromiseMocks = require('./RequestPromise.mocks')
 
 test.describe('server', () => {
   const fooOperations = 'foo operations'
   const fooAccessories = 'foo abilities'
+  const fooBridgePort = 12345
   let lodash
   let domapic
   let accessories
   let abilitiesBridgeMocks
+  let requestPromise
   let homebridge
   let homebridgeConfig
 
@@ -26,6 +29,9 @@ test.describe('server', () => {
     abilitiesBridgeMocks = new AbilitiesBridgeMocks()
     homebridge = new HomebridgeMocks()
     homebridgeConfig = new HomebridgeConfigMocks()
+    requestPromise = new RequestPromiseMocks()
+
+    domapic.stubs.plugin.config.get.resolves(fooBridgePort)
 
     accessories.stubs.instance.get.resolves(fooAccessories)
     abilitiesBridgeMocks.stubs.instance.operations.returns(fooOperations)
@@ -40,6 +46,7 @@ test.describe('server', () => {
     abilitiesBridgeMocks.restore()
     homebridge.restore()
     homebridgeConfig.restore()
+    requestPromise.restore()
   })
 
   test.it('should have created a Domapic Plugin, passing the package path', () => {
@@ -91,6 +98,42 @@ test.describe('server', () => {
 
       test.it('should restart homebridge', () => {
         test.expect(homebridge.stubs.instance.restart).to.have.been.called()
+      })
+    })
+
+    test.describe('when an ability emits an event', () => {
+      let eventCallback
+      test.before(() => {
+        eventCallback = domapic.stubs.plugin.events.on.getCall(9).args[1]
+      })
+
+      test.it('should make a request to notificationsBridge, passing the event data', () => {
+        return eventCallback({
+          data: {
+            _id: 'foo-id',
+            data: true
+          }
+        }).then(() => {
+          const requestData = requestPromise.stub.getCall(0).args[0]
+          return Promise.all([
+            test.expect(requestData.method).to.equal('POST'),
+            test.expect(requestData.uri).to.equal('http://localhost:12345/foo-id'),
+            test.expect(requestData.body.data).to.equal(true),
+            test.expect(requestData.headers['x-api-key']).to.not.be.undefined()
+          ])
+        })
+      })
+
+      test.it('should catch errors from requests to notificationsBridge', () => {
+        requestPromise.stub.rejects(new Error())
+        return eventCallback({
+          data: {
+            _id: 'foo-id',
+            data: true
+          }
+        }).then(() => {
+          return test.expect(true).to.be.true()
+        })
       })
     })
   })

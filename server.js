@@ -43,7 +43,7 @@ domapic.createPlugin({
   dmpcPlugin.events.once('connection', restartHomebridge)
 
   dmpcPlugin.events.on('ability:event', eventData => {
-    requestPromise({
+    return requestPromise({
       method: 'POST',
       uri: `http://localhost:${notificationsBridgePort}/${eventData.data._id}`,
       json: true,
