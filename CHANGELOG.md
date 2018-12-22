@@ -11,6 +11,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Removed
 
 ## [1.0.0-beta.4] - 2018-12-22
+### Added
+- Add "notifications" feature. Add "notify" property to configuration in order to map an ability state into a HomeKit notification.
+
 ### Changed
 - Change accessories default name. Add service name after accesory name.
 
