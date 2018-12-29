@@ -10,6 +10,15 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Fixed
 ### Removed
 
+## [1.0.0-beta.5] - 2018-12-29
+### Added
+- Add TemperatureSensor plugin.
+- Add HumiditySensor plugin.
+- Add "notify" behavior to Switch plugin.
+
+### Changed
+- Wait 10 seconds when stopping homebridge server until it has been really closed.
+
 ## [1.0.0-beta.4] - 2018-12-22
 ### Added
 - Add "notifications" feature. Add "notify" property to configuration in order to map an ability state into a HomeKit notification.
