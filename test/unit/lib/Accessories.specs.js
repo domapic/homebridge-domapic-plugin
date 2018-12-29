@@ -258,7 +258,10 @@ test.describe('Accesories', () => {
                       ability: 'foo-id',
                       dataType: 'boolean'
                     },
-                    notify: null
+                    notify: {
+                      ability: 'foo-id',
+                      dataType: 'boolean'
+                    }
                   }
                 ],
                 name: 'Foo Service switch Foo Service',
@@ -294,7 +297,10 @@ test.describe('Accesories', () => {
                       ability: 'foo-id',
                       dataType: undefined
                     },
-                    notify: null
+                    notify: {
+                      ability: 'foo-id',
+                      dataType: undefined
+                    }
                   }
                 ],
                 name: 'Foo Service switch Foo Service',
