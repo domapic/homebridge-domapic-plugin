@@ -3,6 +3,7 @@ const test = require('narval')
 const mockery = require('../../../mockery')
 
 const MODULE = './common/CharacteristicMethods'
+const MODULE_2 = './CharacteristicMethods'
 
 const Mock = function () {
   let sandbox = test.sinon.createSandbox()
@@ -22,9 +23,11 @@ const Mock = function () {
   const restore = () => {
     sandbox.restore()
     mockery.deregister(MODULE)
+    mockery.deregister(MODULE_2)
   }
 
   mockery.register(MODULE, stub)
+  mockery.register(MODULE_2, stub)
 
   return {
     restore,

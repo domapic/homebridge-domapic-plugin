@@ -2,6 +2,8 @@ const test = require('narval')
 
 const mockery = require('./mockery')
 
+const { trim } = require('lodash')
+
 const MODULE = 'lodash'
 
 const Mock = function () {
@@ -11,7 +13,9 @@ const Mock = function () {
   const stubs = {
     debounce: sandbox.stub().callsFake(cb => {
       debounceCallback = cb
-    })
+    }),
+    delay: sandbox.stub().callsFake(cb => cb()),
+    trim
   }
 
   const restore = () => {

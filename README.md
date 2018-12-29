@@ -91,6 +91,9 @@ Here is an example of an hypothetical module configuration:
             },
             "set": {
               "ability": "switch" // Module ability action to use when Homekit calls to "write" Characteristic
+            },
+            "notify": {
+              "ability": "switch" // Module ability event that will change accessory value, and trigger notifications
             }
           }
         ]
@@ -102,9 +105,6 @@ Here is an example of an hypothetical module configuration:
             "characteristic": "ContactSensorState", // HomeKit Characteristic
             "get": {
               "fixture": true // When Homekit calls to "read" Characteristic will always return true.
-            },
-            "notify": {
-              "ability": "switch" // Module ability event that will change accessory value, and trigger a notification
             }
           }
         ]
@@ -121,7 +121,6 @@ Some points to take into account when defining configuration are:
 * You can use the `fixture` property when a required Characteristic is not available in your module. (In this way, an ability with only an action and no state (a "button" behavior, for example), can be mapped into a "Switch" accessory, as seen in the example above)
 * A Domapic module can be mapped into one or many Homekit accessories, as seen in the example above.
 * Configuration can be modified by Domapic administrators in the Domapic Controller. The configuration defined programatically from module through the `addPluginConfig` method will define only the default configuration.
-* The "notify" property can be defined only for accessories supporting notifications on HomeKit. Otherwise will be ignored.
 * Read the [HAP-NodeJs][hap-nodejs-url] documentation to check all available HomeKit Accessories and required Characteristics for each of them, as well as expected data type for each Characteristic. Supported Accessories by this plugin are listed below.
 
 ## Supported HomeKit Accessories
@@ -131,7 +130,11 @@ Here is the list of currently supported HomeKit Accessories, and its related Cha
 * Switch
 	* On - `<boolean>` data type.
 * ContactSensor
-	* ContactSensorState - `<boolean>` data type. Available notifications.
+	* ContactSensorState - `<boolean>` data type.
+* TemperatureSensor
+  * CurrentTemperature - `<number>` data type.
+* HumiditySensor
+  * CurrentRelativeHumidity - `<number>` data type.
 
 Accessories support will increase on next versions of this plugin.
 

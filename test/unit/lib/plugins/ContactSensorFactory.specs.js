@@ -29,6 +29,10 @@ test.describe('ContactSensor Plugin Factory', () => {
           get: {
             ability: 'ability-id',
             dataType: 'boolean'
+          },
+          notify: {
+            ability: 'ability-id',
+            dataType: 'boolean'
           }
         }
       ],
@@ -99,6 +103,13 @@ test.describe('ContactSensor Plugin Factory', () => {
         const notificationCallBack = characteristicMethods.stubs.instance.emitter.on.getCall(0).args[1]
         notificationCallBack(true)
         test.expect(homebridge.instances.contactSensor.updateValue).to.have.been.calledWith(true)
+      })
+
+      test.it('should not update ContactSensorState value if no notifications are configured', () => {
+        delete characteristicMethods.stubs.instance.emitter
+        contactSensorPlugin = new ContactSensor(log, fooConfig)
+        contactSensorPlugin.getServices()
+        test.expect(characteristicMethods.stubs.instance.emitter).to.be.undefined()
       })
     })
   })
