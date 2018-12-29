@@ -35,6 +35,10 @@ test.describe('Switch Plugin Factory', () => {
           set: {
             ability: 'ability-id',
             dataType: 'boolean'
+          },
+          notify: {
+            ability: 'ability-id',
+            dataType: 'boolean'
           }
         }
       ],
@@ -100,6 +104,20 @@ test.describe('Switch Plugin Factory', () => {
           homebridge.stubs.hap.Characteristic.SerialNumber,
           'foo-service-processId'
         )
+      })
+
+      test.it('should update ContactSensorState value when receives a contactSensor notification', () => {
+        switchPlugin.getServices()
+        const notificationCallBack = characteristicMethods.stubs.instance.emitter.on.getCall(0).args[1]
+        notificationCallBack(true)
+        test.expect(homebridge.instances.switch.updateValue).to.have.been.calledWith(true)
+      })
+
+      test.it('should not update ContactSensorState value if no notifications are configured', () => {
+        delete characteristicMethods.stubs.instance.emitter
+        switchPlugin = new Switch(log, fooConfig)
+        switchPlugin.getServices()
+        test.expect(characteristicMethods.stubs.instance.emitter).to.be.undefined()
       })
     })
   })
