@@ -2,6 +2,7 @@ const path = require('path')
 
 const test = require('narval')
 
+const LodashMocks = require('../Lodash.mocks')
 const DomapicMocks = require('../Domapic.mocks')
 const ChildProcessMocks = require('../ChildProcess.mocks')
 const TreeKillMocks = require('../TreeKill.mocks')
@@ -15,8 +16,10 @@ test.describe('HomeBridge', () => {
   let treeKill
   let fsExtra
   let domapic
+  let lodash
 
   test.beforeEach(() => {
+    lodash = new LodashMocks()
     domapic = new DomapicMocks()
     childProcess = new ChildProcessMocks()
     treeKill = new TreeKillMocks()
@@ -26,6 +29,7 @@ test.describe('HomeBridge', () => {
   })
 
   test.afterEach(() => {
+    lodash.restore()
     childProcess.restore()
     domapic.restore()
     treeKill.restore()
