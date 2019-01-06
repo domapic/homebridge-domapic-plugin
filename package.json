@@ -1,6 +1,6 @@
 {
   "name": "homebridge-domapic-plugin",
-  "version": "1.0.0-beta.5",
+  "version": "1.0.0-beta.6",
   "description": "Domapic plugin for controlling modules with Apple's HomeKit",
   "main": "server.js",
   "bin": {
@@ -28,7 +28,7 @@
   "dependencies": {
     "body-parser": "1.18.3",
     "boom": "7.3.0",
-    "domapic-service": "1.0.0-alpha.5",
+    "domapic-service": "1.0.0-beta.1",
     "express": "4.16.4",
     "fs-extra": "7.0.1",
     "homebridge": "0.4.45",
