@@ -12,7 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 
 ## [1.0.0-beta.6] - 2019-01-06
 ### Changed
-- Upgrade domapic-service version
+- Upgrade domapic-service version. Connection will not work with domapic-controller versions lower than 1.0.0-alpha.14.
 
 ## [1.0.0-beta.5] - 2018-12-29
 ### Added
